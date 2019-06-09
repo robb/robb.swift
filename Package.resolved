@@ -1,0 +1,34 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Down",
+        "repositoryURL": "https://github.com/aasimk2000/Down.git",
+        "state": {
+          "branch": "spm",
+          "revision": "446ad66dac1a732b2f06ba2b11746fec6ed4a0cd",
+          "version": null
+        }
+      },
+      {
+        "package": "HTML",
+        "repositoryURL": "https://github.com/robb/HTML-DSL.git",
+        "state": {
+          "branch": "master",
+          "revision": "25d0951c6e29f9a781e391a4928ee39942324a84",
+          "version": null
+        }
+      },
+      {
+        "package": "Path.swift",
+        "repositoryURL": "https://github.com/mxcl/Path.swift.git",
+        "state": {
+          "branch": null,
+          "revision": "f324b4a562ca421fd2905414a10fb0fc91d58b67",
+          "version": "0.16.2"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

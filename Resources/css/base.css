@@ -1,0 +1,249 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: -apple-system, BlinkMacSystemFont, "HelveticaNeueLight", "HelveticaNeue-Light", "Helvetica Neue Light", "HelveticaNeue", "Helvetica Neue", 'TeXGyreHerosRegular', "Helvetica", "Tahoma", "Geneva", "Arial", sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 40px;
+
+    color: rgba(13, 13, 13, 1);
+    background-color: rgba(250, 250, 250, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        color: rgba(250, 250, 250, 1);
+        background-color: rgba(74, 74, 77, 1);
+    }
+
+    a {
+        color: rgba(118, 199, 245, 1);
+    }
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 15px;
+        line-height: 30px;
+    }
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+    -webkit-text-size-adjust: 100%;
+}
+
+article header, h1, h2, h3 {
+    font-weight: 400;
+    color: rgba(64, 64, 64, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+    article header, h1, h2, h3 {
+        color: rgba(240, 240, 240, 1);
+    }
+}
+
+article header, h1 {
+    font-size: 1.5rem;
+}
+
+article header h1 {
+    display: inline;
+}
+
+h2 {
+    font-size: 1.4rem;
+}
+
+article header, h1, h2 {
+    margin: 1.25rem 0;
+    line-height: 2.5rem;
+}
+
+h3 {
+    line-height: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.625rem;
+}
+
+h1 a, h2 a, h3 a {
+    color: inherit;
+    text-decoration: none;
+}
+
+h1 a:hover, h2 a:hover, h3 a:hover {
+    color: rgba(13, 13, 13, 1);
+}
+
+@media (prefers-color-scheme: dark) {
+    h1 a:hover, h2 a:hover, h3 a:hover {
+        color: rgba(250, 250, 250, 1);
+    }
+}
+
+p, blockquote, ul, ol {
+    -webkit-hyphens: auto;
+    hanging-punctuation: first;
+    hyphens: auto;
+    margin-bottom: 1.25rem;
+}
+
+li {
+    margin-bottom: 0.625rem;
+}
+
+p:last-child, blockquote:last-child, ul:last-child, ol:last-child, li:last-child {
+    margin-bottom: 0;
+}
+
+blockquote {
+    border-left: 0.25rem solid rgba(13, 13, 13, 0.5);
+    padding-left: 0.75rem;
+    padding-right: 1.5rem;
+}
+
+/* Layout */
+
+#header {
+    margin-top: 1.25rem;
+}
+
+#content {
+    margin-bottom: 2.5rem;
+}
+
+#header, #content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+}
+
+#header > *, #content > * {
+    width: 40rem;
+    max-width: 100vw;
+    max-width: calc(100vw - 2.5rem);
+}
+
+/* Articles */
+
+article {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    margin-bottom: 5rem;
+}
+
+article:last-child {
+    margin-bottom: 0;
+}
+
+article .image, article img {
+    align-self: center;
+    max-width: 100vw;
+}
+
+article .embed {
+    display: block;
+    align-self: center;
+
+    background-color: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), 0 3px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    display: inline-block;
+    margin: 1.25rem 0;
+    position: relative;
+    width: 100%;
+}
+
+article .embed:after {
+    padding-top: 56.25%;
+    display: block;
+    content: '';
+}
+
+article .embed iframe {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+article .spotify.embed {
+    width: 80%;
+}
+
+article .spotify.embed:after {
+    padding-top: calc(80px);
+}
+
+article .large.spotify.embed:after {
+    padding-top: calc(100% + 80px);
+}
+
+article .left {
+    float: left;
+    margin-right: 1.25rem;
+}
+
+article .right {
+    float: right;
+    margin-left: 1.25rem;
+}
+
+article ul {
+    list-style: none;
+}
+
+article ul li:before {
+    color: inherit;
+    content: "‣";
+    display: inline-block;
+    margin-left: -0.7rem;
+    width: 0.7rem;
+
+    position: relative;
+    top: -1px;
+}
+
+@media (max-width: 45rem) {
+    article ol {
+        counter-reset: list-item;
+    }
+
+    article ol li {
+        counter-increment: list-item;
+        list-style-type: none;
+    }
+
+    article ol li:before {
+        content: counter(list-item) ". ";
+    }
+}
+
+article code, article pre {
+    font-family: "SF Mono", monospace;
+    font-weight: 300;
+    font-size: 0.85rem;
+    line-height: 1.25rem !important;
+}
+
+article .highlight {
+    background-color: rgba(30, 30, 30, 1);
+    border-radius: 4px;
+    overflow-x: scroll;
+}
+
+article .highlight {
+    padding: 1rem;
+    color: white;
+    margin-bottom: 1.25rem;
+}

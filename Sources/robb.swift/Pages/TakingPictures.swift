@@ -10,7 +10,6 @@ struct TakingPictures: Page {
 
     func render() -> Node {
         pageLayout(page: self) {
-
             posts
                 .map { post in
                     article {

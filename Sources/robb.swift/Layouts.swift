@@ -41,32 +41,7 @@ func pageLayout(page: Page, @NodeBuilder content: () -> NodeBuilderComponent) ->
 
 let navigation = nav(id: "navigation") {
     style {
-        """
-        #navigation {
-            margin: 1.25rem 0;
-
-            display: flex;
-            flex-direction: row;
-            flex-wrap: nowrap;
-            justify-content: space-between;
-        }
-
-        #navigation h1, #navigation li {
-            font-size: 1rem;
-            display: inline-block;
-            line-height: 2rem;
-            margin: 0;
-        }
-
-        #navigation li {
-            list-style-type: none;
-            margin-left: 0.625rem;
-        }
-
-        #navigation a {
-            text-decoration: none;
-        }
-        """
+        InlineFilter.inline(file: "css/navigation.css")
     }
     h1 {
         a(href: "/") { "robb.is" }

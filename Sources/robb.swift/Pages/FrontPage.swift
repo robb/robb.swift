@@ -55,7 +55,7 @@ struct FrontPage: Page {
                     "You can check out some of my"
                     a(href: "/taking-pictures") { "photos" }
                     "or learn"
-                    a(href: "/who-exactly") { "more about me" }  %% "."
+                    a(href: "/who-exactly") { "more about me" } %% "."
                 }
 
                 script(type: "text/javascript") {

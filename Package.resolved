@@ -3,10 +3,10 @@
     "pins": [
       {
         "package": "Down",
-        "repositoryURL": "https://github.com/aasimk2000/Down.git",
+        "repositoryURL": "https://github.com/iwasrobbed/Down.git",
         "state": {
-          "branch": "spm",
-          "revision": "446ad66dac1a732b2f06ba2b11746fec6ed4a0cd",
+          "branch": "master",
+          "revision": "805e537949f21a64c46227ca9aa881f16ba93048",
           "version": null
         }
       },

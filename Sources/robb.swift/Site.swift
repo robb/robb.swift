@@ -7,6 +7,8 @@ struct Site {
         return pages + posts
     }
 
+    var filters: [Filter]
+
     var pages: [Page]
 
     var posts: [Post] = []
@@ -15,15 +17,15 @@ struct Site {
 
     var resources: [Resource] = []
 
-    init(baseDirectory base: URL) throws {
-        try self.init(
-            postsDirectory: base.appendingPathComponent("Posts"),
-            resourcesDirectory: base.appendingPathComponent("Resources"),
-            outputDirectory: base.appendingPathComponent("Site")
-        )
-    }
+    init(baseDirectory baseURL: URL) throws {
+        let postsDirectory = baseURL.appendingPathComponent("Posts")
+        let resourcesDirectory = baseURL.appendingPathComponent("Resources")
+        let outputDirectory = baseURL.appendingPathComponent("Site")
 
-    init(postsDirectory: URL, resourcesDirectory: URL, outputDirectory: URL) throws {
+        self.filters = [
+            InlineFilter(baseURL: baseURL.appendingPathComponent("Inline"))
+        ]
+
         self.outputDirectory = outputDirectory
 
         self.posts = try FileManager.default
@@ -104,7 +106,17 @@ struct Site {
 
         var stream = FileHandlerOutputStream(handle)
 
-        page.render().write(to: &stream)
+        let content = page.render() as Node?
+
+        let filtered = filters.reduce(content) { node, filter in
+            guard let node = node else { return nil }
+
+            return filter.applyRecusively(node: node)
+        }
+
+        guard let result = filtered else { return }
+
+        result.write(to: &stream)
 
         handle.truncateFile(atOffset: handle.offsetInFile)
     }

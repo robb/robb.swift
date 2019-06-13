@@ -27,7 +27,7 @@ import HTML
 /// ```
 struct MarkdownFilter: Filter {
     static func markdown(@NodeBuilder content: () -> NodeBuilderComponent) -> HTML.Node {
-        return Tag(name: "custom-markdown", children: content().asNodeArray)
+        Tag(name: "custom-markdown", children: content().asNodeArray)
     }
 
     static func render(_ string: String) -> HTML.Node? {

@@ -15,6 +15,6 @@ struct InlineFilter: Filter {
     }
 
     static func inline(file path: String) -> Node {
-        return Tag(name: "custom-inline", attributes: [ "path": path ], children: [])
+        Tag(name: "custom-inline", attributes: [ "path": path ], children: [])
     }
 }

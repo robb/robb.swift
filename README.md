@@ -2,7 +2,7 @@
 
 My personal website, ported from Jekyll to Swift.
 
-🚧 Everything here is everymuch WIP, proceed with caution. 🚧
+🚧 Everything here is very much WIP, proceed with caution. 🚧
 
 #### Before:
 

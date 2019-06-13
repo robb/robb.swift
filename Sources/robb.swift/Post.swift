@@ -74,6 +74,7 @@ extension Post {
         self.content = markdown(body)
         self.date = Day(from: url.lastPathComponent)!
         self.description = frontMatter["description"]
+        self.link = frontMatter["link"]
         self.slug = slug
         self.title = frontMatter["title"] ?? url.lastPathComponent
         self.url = frontMatter["permalink"] ?? [ "", category, slug ].compactMap { $0 }.joined(separator: "/")
@@ -109,7 +110,7 @@ extension Post: Page {
                         }
 
                         if link != nil {
-                            "("; a(href: url) { "Permalink" }; ")"
+                            "(" %% a(href: url) { "Permalink" } %% ")"
                         }
                     }
                 }

@@ -4,12 +4,32 @@ import Foundation
 import libcmark
 import HTML
 
-func markdown(_ string: String) -> [HTML.Node] {
-    let ast = try! Down(markdownString: string).toAST()
+struct MarkdownFilter: Filter {
+    static func markdown(@NodeBuilder content: () -> NodeBuilderComponent) -> HTML.Node {
+        return Tag(name: "custom-markdown", children: content().asNodeArray)
+    }
 
-    let document = ast.wrap() as? Document
+    static func render(_ string: String) -> HTML.Node? {
+        let ast = try! Down(markdownString: string).toAST()
 
-    return document!.accept(MarkdownToHTMLVisitor())!.asNodeArray
+        let document = ast.wrap() as? Document
+
+        return document!.accept(MarkdownToHTMLVisitor())
+    }
+
+    func apply(node input: HTML.Node) -> HTML.Node? {
+        guard var node = input as? Tag, node.name == "custom-markdown" else {
+            return input
+        }
+
+        node.children = node.children.compactMap { child in
+            guard let text = child as? HTML.Text else { return child }
+
+            return MarkdownFilter.render(text.value)
+        }
+
+        return node
+    }
 }
 
 private struct MarkdownToHTMLVisitor: Visitor {

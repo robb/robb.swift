@@ -18,11 +18,10 @@ struct TakingPictures: Page {
                                 post.title
                             }
                         }
-                        
+
                         post.content
                     }
             }
-
         }
     }
 }

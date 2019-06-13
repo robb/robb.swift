@@ -81,24 +81,6 @@ extension Post {
     }
 }
 
-private extension Day {
-    init?(from title: String) {
-        var year = 0, month = 0, day = 0
-
-        let scanner = Scanner(string: title)
-
-        guard scanner.scanInt(&year)
-            && scanner.scanString("-", into: nil)
-            && scanner.scanInt(&month)
-            && scanner.scanString("-", into: nil)
-            && scanner.scanInt(&day) else {
-                return nil
-        }
-
-        self = Day(year: year, month: month, day: day)
-    }
-}
-
 extension Post: Page {
     func render() -> Node {
         pageLayout(page: self) {
@@ -130,5 +112,23 @@ extension Post: Page {
                 }
             }
         }
+    }
+}
+
+private extension Day {
+    init?(from title: String) {
+        var year = 0, month = 0, day = 0
+
+        let scanner = Scanner(string: title)
+
+        guard scanner.scanInt(&year)
+            && scanner.scanString("-", into: nil)
+            && scanner.scanInt(&month)
+            && scanner.scanString("-", into: nil)
+            && scanner.scanInt(&day) else {
+                return nil
+        }
+
+        self = Day(year: year, month: month, day: day)
     }
 }

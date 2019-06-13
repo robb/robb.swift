@@ -10,7 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
-        .package(url: "https://github.com/aasimk2000/Down.git", .branch("spm")),
+        .package(url: "https://github.com/iwasrobbed/Down.git", .branch("master")),
         .package(url: "https://github.com/mxcl/Path.swift.git", from: "0.13.0")
     ],
     targets: [

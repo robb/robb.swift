@@ -12,6 +12,7 @@ struct Archive: Page {
         pageLayout(page: self) {
             ul {
                 posts
+                    .reversed()
                     .map { post in
                         li {
                             a(href: post.url) {

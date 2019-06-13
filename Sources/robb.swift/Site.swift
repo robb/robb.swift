@@ -107,17 +107,16 @@ struct Site {
 
         var stream = FileHandlerOutputStream(handle)
 
-        let content = page.render() as Node?
+        let content = page.render()
 
-        let filtered = filters.reduce(content) { node, filter in
-            guard let node = node else { return nil }
+        let filtered = filters
+            .reduce([content]) { nodes, filter in
+                nodes.flatMap(filter.applyRecusively)
+            }
 
-            return filter.applyRecusively(node: node)
+        for result in filtered {
+            result.write(to: &stream)
         }
-
-        guard let result = filtered else { return }
-
-        result.write(to: &stream)
 
         handle.truncateFile(atOffset: handle.offsetInFile)
     }

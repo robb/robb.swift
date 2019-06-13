@@ -4,6 +4,27 @@ import Foundation
 import libcmark
 import HTML
 
+/// This filter converts all its immediate text node children from Markdown to HTML.
+///
+/// For example,
+///
+/// ```swift
+/// MarkdownFilter.markdown {
+///     "# Hello"
+///
+///     "You are"; username
+/// }
+/// ```
+///
+/// will render as
+///
+/// ```html
+/// <section>
+///     <h1>Hello</h1>
+///
+///     You are Johnny Appleseed
+/// </section>
+/// ```
 struct MarkdownFilter: Filter {
     static func markdown(@NodeBuilder content: () -> NodeBuilderComponent) -> HTML.Node {
         return Tag(name: "custom-markdown", children: content().asNodeArray)
@@ -17,18 +38,16 @@ struct MarkdownFilter: Filter {
         return document!.accept(MarkdownToHTMLVisitor())
     }
 
-    func apply(node input: HTML.Node) -> HTML.Node? {
-        guard var node = input as? Tag, node.name == "custom-markdown" else {
-            return input
+    func apply(node input: HTML.Node) -> [HTML.Node] {
+        guard let node = input as? Tag, node.name == "custom-markdown" else {
+            return  [ input ]
         }
 
-        node.children = node.children.compactMap { child in
+        return node.children.compactMap { child in
             guard let text = child as? HTML.Text else { return child }
 
             return MarkdownFilter.render(text.value)
         }
-
-        return node
     }
 }
 

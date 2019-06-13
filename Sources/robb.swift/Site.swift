@@ -23,7 +23,8 @@ struct Site {
         let outputDirectory = baseURL.appendingPathComponent("Site")
 
         self.filters = [
-            InlineFilter(baseURL: baseURL.appendingPathComponent("Inline"))
+            InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
+            MarkdownFilter()
         ]
 
         self.outputDirectory = outputDirectory

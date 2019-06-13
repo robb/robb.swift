@@ -6,7 +6,7 @@ private let calendar = Calendar(identifier: .gregorian)
 struct Post {
     var category: String?
 
-    var content: [HTML.Node]
+    var content: String
 
     var date: Day
 
@@ -71,7 +71,7 @@ extension Post {
         let category = frontMatter["category"]
 
         self.category = category
-        self.content = markdown(body)
+        self.content = body
         self.date = Day(from: url.lastPathComponent)!
         self.description = frontMatter["description"]
         self.link = frontMatter["link"]
@@ -115,7 +115,9 @@ extension Post: Page {
                     }
                 }
 
-                content
+                MarkdownFilter.markdown {
+                    content
+                }
 
                 if category != nil && category != "taking-pictures" {
                     small {

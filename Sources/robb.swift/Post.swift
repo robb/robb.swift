@@ -125,7 +125,7 @@ extension Post: Page {
                         time {
                             format(date)
                         }
-                        "in"; a(href: "") { category! }
+                        "in"; a(href: "/" + category!) { category! }
                     }
                 }
             }

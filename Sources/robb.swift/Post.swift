@@ -48,7 +48,7 @@ extension Post {
                     .split(separator: "\n")
                     .map { lines in
                         lines
-                            .split(separator: ":")
+                            .split(separator: ":", maxSplits: 1)
                             .map {
                                 $0.trimmingCharacters(in: .whitespaces)
                             }

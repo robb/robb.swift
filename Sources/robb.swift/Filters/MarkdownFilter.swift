@@ -203,6 +203,6 @@ private struct MarkdownToHTMLVisitor: Visitor {
     }
 
     func visitChildren(of node: BaseNode) -> [HTML.Node] {
-        return visitChildren(of: node).compactMap { $0 }
+        visitChildren(of: node).compactMap { $0 }
     }
 }

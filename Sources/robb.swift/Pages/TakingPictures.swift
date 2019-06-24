@@ -11,6 +11,9 @@ struct TakingPictures: Page {
     func render() -> Node {
         pageLayout(page: self) {
             posts
+                .sorted { a, b in
+                    a.date > b.date
+                }
                 .map { post in
                     article {
                         h1 {
@@ -19,7 +22,9 @@ struct TakingPictures: Page {
                             }
                         }
 
-                        post.content
+                        MarkdownFilter.markdown {
+                            post.content
+                        }
                     }
             }
         }

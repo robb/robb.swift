@@ -247,3 +247,7 @@ article .highlight {
     color: white;
     margin-bottom: 1.25rem;
 }
+
+article section.markdown {
+    display: contents;
+}

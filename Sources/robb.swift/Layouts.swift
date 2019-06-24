@@ -19,6 +19,7 @@ func defaultLayout(page: Page, @NodeBuilder content: () -> NodeBuilderComponent)
 
             style {
                 InlineFilter.inline(file: "css/base.css")
+                InlineFilter.inline(file: "css/gallery.css")
             }
         }
         body {

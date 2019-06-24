@@ -6,6 +6,14 @@ category: taking-pictures
 ---
 
 <div class="gallery">
-    <img src="/photos/sf/007.jpg" />
-    <img src="/photos/sf/008.jpg" />
+    <div class="picture">
+        <a href="/photos/sf/007.jpg">
+            <img src="/photos/sf/007.jpg" />
+        </a>
+    </div>
+    <div class="picture">
+        <a href="/photos/sf/008.jpg">
+            <img src="/photos/sf/008.jpg" />
+        </a>
+    </div>
 </div>

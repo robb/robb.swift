@@ -53,7 +53,7 @@ struct MarkdownFilter: Filter {
 
 private struct MarkdownToHTMLVisitor: Visitor {
     func visit(document node: Document) -> HTML.Node? {
-        section {
+        section(classes: "markdown") {
             visitChildren(of: node)
         }
     }

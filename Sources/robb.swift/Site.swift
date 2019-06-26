@@ -3,64 +3,50 @@ import HTML
 import Path
 
 struct Site {
-    var allPages: [Page] {
-        return pages + posts
-    }
-
     var filters: [Filter]
 
-    var pages: [Page]
-
-    var posts: [Post] = []
+    var generators: [Generator]
 
     var outputDirectory: URL
 
-    var resources: [Resource] = []
+    var resourcesDirectory: URL
 
     init(baseDirectory baseURL: URL) throws {
-        let postsDirectory = baseURL.appendingPathComponent("Posts")
-        let resourcesDirectory = baseURL.appendingPathComponent("Resources")
-        let outputDirectory = baseURL.appendingPathComponent("Site")
-
-        self.filters = [
+        filters = [
             InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
             MarkdownFilter()
         ]
 
-        self.outputDirectory = outputDirectory
-
-        self.posts = try FileManager.default
-            .contentsOfDirectory(atPath: postsDirectory.path)
-            .map {
-                postsDirectory.appendingPathComponent($0)
-            }
-            .map {
-                try Post(contentsOfJekyllPost: $0)
-            }
-            .sorted { a, b in
-                a.date < b.date
-            }
-
-        self.pages = [
-            FrontPage(),
-            Archive(posts: posts),
-            About()
+        generators = [
+            try JekyllPostGenerator(directory: baseURL.appendingPathComponent("Posts"))
         ]
 
-        let postsToIndex = posts.filter {
-            $0.category != nil && $0.category != "taking-pictures"
+        resourcesDirectory = baseURL.appendingPathComponent("Resources")
+        outputDirectory = baseURL.appendingPathComponent("Site")
+    }
+
+    func build() throws {
+        let pages = try generators.flatMap { try $0.generate() }
+
+        let posts = pages.compactMap { $0 as? Post }
+
+        let allPages = pages + [
+            About(),
+            Archive(posts: posts),
+            FrontPage(),
+            TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
+        ]
+
+        DispatchQueue.concurrentPerform(iterations: allPages.count) { i in
+            let page = allPages[i]
+
+            try! write(page: page)
         }
-
-        let categoryIndices = Dictionary(grouping: postsToIndex) { $0.category! }
-
-        self.pages.append(contentsOf: categoryIndices.map(CategoryIndex.init))
-
-        self.pages.append(TakingPictures(posts: posts.filter { $0.category == "taking-pictures" }))
 
         let resourcePath = Path(url: resourcesDirectory)!
         let outputPath = Path(url: outputDirectory)!
 
-        self.resources = try resourcePath
+        let resources = try resourcePath
             .lsR(includeHiddenFiles: false)
             .map {
                 $0.path
@@ -70,18 +56,6 @@ struct Site {
 
                 return Resource(origin: origin.url, destination: destination.url)
             }
-    }
-
-    func build() throws {
-        let allPages = self.allPages
-
-        DispatchQueue.concurrentPerform(iterations: allPages.count) { i in
-            let page = allPages[i]
-
-            try! write(page: page)
-        }
-
-        let resources = self.resources
 
         DispatchQueue.concurrentPerform(iterations: resources.count) { i in
             let resource = resources[i]

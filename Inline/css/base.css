@@ -203,14 +203,18 @@ article ul {
     list-style: none;
 }
 
+article ul li {
+    position: relative;
+}
+
 article ul li:before {
     color: inherit;
     content: "‣";
     display: inline-block;
-    margin-left: -0.7rem;
+    left: -0.7rem;
     width: 0.7rem;
 
-    position: relative;
+    position: absolute;
     top: -1px;
 }
 

@@ -5,3 +5,6 @@
 
 # Output
 Site/
+
+# Non-Swift Dependencies
+Vendor/

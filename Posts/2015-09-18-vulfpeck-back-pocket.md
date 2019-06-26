@@ -13,6 +13,5 @@ slug: vulfpeck-back-pocket
             padding-top: 56.25% !important;
         }
     </style>
-
     <iframe width="480" height="270" src="https://www.youtube.com/embed/r5pYL-Y--To?feature=oembed" frameborder="0" allowfullscreen="">Find it on <a href="https://www.youtube.com/watch?v=r5pYL-Y--To">YouTube</a>.</iframe>
 </div>

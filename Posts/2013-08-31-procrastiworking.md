@@ -17,7 +17,6 @@ you for.
             padding-top: 56.25% !important;
         }
     </style>
-
     <iframe width="480" height="270" src="http://www.youtube.com/embed/RZbqJxQJ5LY?feature=oembed" frameborder="0" allowfullscreen></iframe>
 </div>
 

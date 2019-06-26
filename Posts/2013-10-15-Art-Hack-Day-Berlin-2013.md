@@ -23,7 +23,6 @@ Check out this video that does a great job at capturing the vibe of the event:
             padding-top: 56.25% !important;
         }
     </style>
-
     <iframe src="//player.vimeo.com/video/76620957?portrait=0&amp;byline=0&amp;color=3388CC" width="1280" height="720" frameborder="0" title="Art Hack Day Berlin /// + Going Dark +" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 

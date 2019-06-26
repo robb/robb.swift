@@ -21,7 +21,6 @@ embedded below:
             padding-top: 83.94366197183099% !important;
         }
     </style>
-
     <iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fspeakerdeck.com%2Fplayer%2F96d9d3c095400130010e5225ae2bc12a&amp;url=https%3A%2F%2Fspeakerdeck.com%2Frobb%2Freactivecocoa&amp;image=https%3A%2F%2Fspeakerd.s3.amazonaws.com%2Fpresentations%2F96d9d3c095400130010e5225ae2bc12a%2Fslide_0.jpg&amp;key=01b95e9d4bd648fbb64752457c12935d&amp;type=text%2Fhtml&amp;schema=speakerdeck" scrolling="no" frameborder="0" allowfullscreen></iframe>
 </div>
 

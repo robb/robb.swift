@@ -15,7 +15,6 @@ And now, what you've all been waiting for:
             padding-top: 56.25% !important;
         }
     </style>
-
     <iframe src="//player.vimeo.com/video/31084756?byline=0&amp;color=ED7233" width="1280" height="720" frameborder="0" title="Introducing the SoundCloud iPad app" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 

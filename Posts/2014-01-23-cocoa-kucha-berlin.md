@@ -20,7 +20,6 @@ system of Pecha Kucha, but I think it worked out in the end.
             padding-top: 71.40845070422536% !important;
         }
     </style>
-
     <iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fspeakerdeck.com%2Fplayer%2F3ddbeee065e0013141ed0a8e078e48ce&amp;url=https%3A%2F%2Fspeakerdeck.com%2Frobb%2Fcocoa-kucha-berlin-2013&amp;image=https%3A%2F%2Fspeakerd.s3.amazonaws.com%2Fpresentations%2F3ddbeee065e0013141ed0a8e078e48ce%2Fslide_0.jpg&amp;key=01b95e9d4bd648fbb64752457c12935d&amp;type=text%2Fhtml&amp;schema=speakerdeck" width="710" height="507" scrolling="no" frameborder="0" allowfullscreen></iframe>
 </div>
 

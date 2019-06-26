@@ -12,7 +12,6 @@ slug: berlin-wall
             padding-top: 75% !important;
         }
     </style>
-
     <iframe src="//player.vimeo.com/video/22713488?byline=0&amp;color=661109" width="640" height="480" frameborder="0" title='The Heavenly States (ft. Britt Daniel) - "Berlin Wall"' webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 

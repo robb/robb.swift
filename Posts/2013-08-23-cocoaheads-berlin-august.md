@@ -19,7 +19,6 @@ embedded here:
             padding-top: 65.2112676056338% !important;
         }
     </style>
-
     <iframe class="embedly-embed" src="//cdn.embedly.com/widgets/media.html?src=https%3A%2F%2Fspeakerdeck.com%2Fplayer%2F11b38120ecb901303e23663b67ccac51&amp;url=https%3A%2F%2Fspeakerdeck.com%2Frobb%2Funderscore-dot-m-plus-asterism&amp;image=https%3A%2F%2Fspeakerd.s3.amazonaws.com%2Fpresentations%2F11b38120ecb901303e23663b67ccac51%2Fslide_0.jpg&amp;key=01b95e9d4bd648fbb64752457c12935d&amp;type=text%2Fhtml&amp;schema=speakerdeck" scrolling="no" frameborder="0" allowfullscreen></iframe>
 </div>
 

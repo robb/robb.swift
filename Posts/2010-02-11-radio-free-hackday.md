@@ -24,7 +24,6 @@ We got very positive feedback for our hack, [Create Digital Music][cdm_mhd_sthml
             padding-top: 56.25% !important;
         }
     </style>
-
     <iframe src="//player.vimeo.com/video/9491104?color=b06411" width="640" height="360" frameborder="0" title="Rapport ABC on Music Hackday Stockholm" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 

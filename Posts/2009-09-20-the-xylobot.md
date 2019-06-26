@@ -22,7 +22,6 @@ The Xylobot also was mentioned by Peter in [his Music Hackday wrap-up][cdm_mhd_b
             padding-top: 75% !important;
         }
     </style>
-
     <iframe src="//player.vimeo.com/video/6668819?color=00cc00" width="640" height="480" frameborder="0" title="xylobot run by monome" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 

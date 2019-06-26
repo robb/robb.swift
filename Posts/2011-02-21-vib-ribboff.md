@@ -22,7 +22,6 @@ obstacles to beats in the song.
             padding-top: 74.94553376906318% !important;
         }
     </style>
-
     <iframe width="459" height="344" src="http://www.youtube.com/embed/K6BhnFegmb0?feature=oembed" frameborder="0" allowfullscreen></iframe>
 </div>
 

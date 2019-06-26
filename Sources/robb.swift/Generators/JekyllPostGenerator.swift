@@ -16,9 +16,10 @@ struct JekyllPostGenerator: Generator {
             .map {
                 directory.appendingPathComponent($0)
             }
-            .map {
-                try Post(contentsOfJekyllPost: $0)
+            .concurrentMap {
+                try? Post(contentsOfJekyllPost: $0)
             }
+            .compactMap { $0 }
             .sorted { a, b in
                 a.date < b.date
             }
@@ -115,5 +116,23 @@ private extension Day {
         }
 
         self = Day(year: year, month: month, day: day)
+    }
+}
+
+private extension Array {
+    func concurrentMap<B>(_ transform: @escaping (Element) -> B) -> [B] {
+        let queue = DispatchQueue(label: "synchronous queue")
+
+        var result = Array<B?>(repeating: nil, count: count)
+
+        DispatchQueue.concurrentPerform(iterations: count) { i in
+            let transformed = transform(self[i])
+
+            queue.sync {
+                result[i] = transformed
+            }
+        }
+
+        return result.map { $0! }
     }
 }

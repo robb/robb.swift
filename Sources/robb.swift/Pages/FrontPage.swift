@@ -28,10 +28,8 @@ struct FrontPage: Page {
                         span(customData: ["summary": "soft&shy;ware de&shy;velop&shy;er"], classes: "token") {
                             "soft&shy;ware de&shy;velop&shy;er"
 
-                            span(classes: "strikethrough") {
-                                span(customData: ["summary": "at&nbsp;Apple"], classes: "token") {
-                                    "in the Health team at Apple"
-                                }
+                            span(customData: ["summary": "at&nbsp;Google"], classes: "token") {
+                                "in the Kernel team at Google"
                             }
                         } %% "."
                     }
@@ -44,9 +42,9 @@ struct FrontPage: Page {
                         }
                         %%
                         ".&nbsp;"
-
+                        %%
                         span(classes: "shake") {
-                            "👋🏻"
+                           %"👋🏻"%
                         }
                     }
                 }

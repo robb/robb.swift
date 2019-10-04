@@ -1,5 +1,5 @@
 *Hi*, my name is Robert Böhnke but you can call me Robb. I'm a software
-developer in the Health team at Apple. I live in Berlin.
+developer in the Kernel team at Google. I live in Berlin.
 
 If you would like to get in touch with me, send an e-mail to
 [robb@robb.is](mailto:robb@robb.is). You can also check out my [GitHub

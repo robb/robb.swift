@@ -7,7 +7,7 @@ struct FrontPage: Page {
     let url = "/"
 
     func render() -> Node {
-        defaultLayout(page: self) {
+        defaultLayout {
             header(id: "header") {
                 style(type: "text/css") {
                     InlineFilter.inline(file: "css/intro.css")

@@ -6,33 +6,33 @@ struct CategoryIndex: Page {
 
     var title: String
 
-    var url: String
+    var pathComponents: [String]
 
     init(category: String, posts: [Post]) {
+        precondition(!category.contains("/"))
+
         self.posts = posts
         self.title = category.titlecased()
-        self.url = category
+        self.pathComponents = [ category ]
     }
 
-    func render() -> Node {
-        pageLayout {
-            ul {
-                posts
-                    .reversed()
-                    .map { post in
-                        li {
-                            a(href: post.url) {
-                                format(post.date)
-                                " – "
-                                post.title
-                            }
-
-                            if post.description != nil {
-                                br()
-                                post.description!
-                            }
+    func content() -> Node {
+        ul {
+            posts
+                .reversed()
+                .map { post in
+                    li {
+                        a(href: post.path) {
+                            format(post.date)
+                            " – "
+                            post.title
                         }
-                }
+
+                        if post.description != nil {
+                            br()
+                            post.description!
+                        }
+                    }
             }
         }
     }

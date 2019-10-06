@@ -2,11 +2,9 @@ import Foundation
 
 /// Generates a `Post` for each Jekyll-style markdown file in `directory` as well as a `CategoryIndex`.
 struct JekyllPostGenerator: Generator {
-    typealias Output = Page
-
     var directory: URL
 
-    init(directory: URL) throws {
+    init(directory: URL) {
         self.directory = directory
     }
 
@@ -91,13 +89,13 @@ private extension Post {
         let category = frontMatter["category"]
 
         self.category = category
-        self.content = body
+        self.body = body
         self.date = Day(from: url.lastPathComponent)!
         self.description = frontMatter["description"]
         self.link = frontMatter["link"]
-        self.slug = slug
-        self.title = frontMatter["title"] ?? url.lastPathComponent
-        self.url = frontMatter["permalink"] ?? [ "", category, slug ].compactMap { $0 }.joined(separator: "/")
+        self.title = title
+        self.pathComponents = frontMatter["permalink"]?.pathComponents
+            ?? [ category, slug ].compactMap { $0 }
     }
 }
 
@@ -119,20 +117,18 @@ private extension Day {
     }
 }
 
-private extension Array {
-    func concurrentMap<B>(_ transform: @escaping (Element) -> B) -> [B] {
-        let queue = DispatchQueue(label: "synchronous queue")
-
-        var result = Array<B?>(repeating: nil, count: count)
-
-        DispatchQueue.concurrentPerform(iterations: count) { i in
-            let transformed = transform(self[i])
-
-            queue.sync {
-                result[i] = transformed
-            }
+private extension String {
+    func trimmingTrailingSlash() -> String {
+        if last == "/" {
+            return String(dropLast())
+        } else {
+            return self
         }
+    }
+}
 
-        return result.map { $0! }
+private extension String {
+    var pathComponents: [String] {
+        split(separator: "/").map(String.init)
     }
 }

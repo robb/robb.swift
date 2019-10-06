@@ -1,10 +1,11 @@
 import Down
 import class Down.Text
+import protocol Down.Visitor
 import Foundation
 import libcmark
 import HTML
 
-/// This filter converts all its immediate text node children from Markdown to HTML.
+/// This filter converts all its text node children from Markdown to HTML.
 ///
 /// For example,
 ///
@@ -26,8 +27,8 @@ import HTML
 /// </section>
 /// ```
 struct MarkdownFilter: Filter {
-    static func markdown(@NodeBuilder content: () -> NodeBuilderComponent) -> HTML.Node {
-        Tag(name: "custom-markdown", children: content().asNodeArray)
+    static func markdown(@NodeBuilder content: () -> NodeConvertible) -> HTML.Node {
+        .element(name: "custom-markdown", child: content().asNode())
     }
 
     static func render(_ string: String) -> HTML.Node? {
@@ -38,20 +39,39 @@ struct MarkdownFilter: Filter {
         return document!.accept(MarkdownToHTMLVisitor())
     }
 
-    func apply(node input: HTML.Node) -> [HTML.Node] {
-        guard let node = input as? Tag, node.name == "custom-markdown" else {
-            return  [ input ]
-        }
+    func apply(node: HTML.Node) -> HTML.Node {
+        let visitor = MarkdownFilterVisitor()
 
-        return node.children.compactMap { child in
-            guard let text = child as? HTML.Text else { return child }
-
-            return MarkdownFilter.render(text.value)
-        }
+        return visitor.visitNode(node)
     }
 }
 
-private struct MarkdownToHTMLVisitor: Visitor {
+private final class MarkdownFilterVisitor: HTML.Visitor {
+    typealias Result = HTML.Node
+
+    var isInsideMarkdownTag = false
+
+    func visitElement(name: String, attributes: [String : String], child: HTML.Node) -> HTML.Node {
+        guard name == "custom-markdown" else {
+            return .element(name: name, attributes: attributes, child: visitNode(child))
+        }
+
+        isInsideMarkdownTag = true
+        defer {
+            isInsideMarkdownTag = false
+        }
+
+        return visitNode(child)
+    }
+
+    func visitText(text: String) -> HTML.Node {
+        guard isInsideMarkdownTag else { return .text(text) }
+
+        return MarkdownFilter.render(text) ?? ""
+    }
+}
+
+private final class MarkdownToHTMLVisitor: Visitor {
     func visit(document node: Document) -> HTML.Node? {
         article(classes: "markdown") {
             visitChildren(of: node)
@@ -96,7 +116,7 @@ private struct MarkdownToHTMLVisitor: Visitor {
     }
 
     func visit(htmlBlock node: HtmlBlock) -> HTML.Node? {
-        HTML.Text(value: node.literal ?? "")
+        .text(node.literal ?? "")
     }
 
     func visit(customBlock node: CustomBlock) -> HTML.Node? {
@@ -133,11 +153,11 @@ private struct MarkdownToHTMLVisitor: Visitor {
     func visit(text node: Text) -> HTML.Node? {
         guard let content = node.literal else { return nil }
 
-        return HTML.Text(value: content)
+        return .text(content)
     }
 
     func visit(softBreak node: SoftBreak) -> HTML.Node? {
-        HTML.Text(value: "")
+        .text("")
     }
 
     func visit(lineBreak node: LineBreak) -> HTML.Node? {
@@ -147,18 +167,11 @@ private struct MarkdownToHTMLVisitor: Visitor {
     func visit(code node: Code) -> HTML.Node? {
         guard let content = node.literal else { return nil }
 
-        var snippet = code {
-            content
-        }
-
-        snippet.trimMode.insert(.leadingSibling)
-        snippet.trimMode.insert(.trailingSibling)
-
-        return snippet
+        return %code { content }%
     }
 
     func visit(htmlInline node: HtmlInline) -> HTML.Node? {
-        HTML.Text(value: node.literal ?? "")
+        .text(node.literal ?? "")
     }
 
     func visit(customInline node: CustomInline) -> HTML.Node? {
@@ -166,36 +179,21 @@ private struct MarkdownToHTMLVisitor: Visitor {
     }
 
     func visit(emphasis node: Emphasis) -> HTML.Node? {
-        var emphasis = em {
+        %em {
             visitChildren(of: node)
-        }
-
-        emphasis.trimMode.insert(.leadingSibling)
-        emphasis.trimMode.insert(.trailingSibling)
-
-        return emphasis
+        }%
     }
 
     func visit(strong node: Strong) -> HTML.Node? {
-        var bold = strong {
+        %strong {
             visitChildren(of: node)
-        }
-
-        bold.trimMode.insert(.leadingSibling)
-        bold.trimMode.insert(.trailingSibling)
-
-        return bold
+        }%
     }
 
     func visit(link node: Link) -> HTML.Node? {
-        var link = a(href: node.url, title: node.title) {
+        %a(href: node.url, title: node.title) {
             visitChildren(of: node)
-        }
-
-        link.trimMode.insert(.leadingSibling)
-        link.trimMode.insert(.trailingSibling)
-
-        return link
+        }%
     }
 
     func visit(image node: Image) -> HTML.Node? {

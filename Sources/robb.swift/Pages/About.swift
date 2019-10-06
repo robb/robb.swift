@@ -4,13 +4,11 @@ import HTML
 struct About: Page {
     let title = "Who Exactly?"
 
-    let url = "/who-exactly"
+    let pathComponents = [ "who-exactly" ]
 
-    func render() -> Node {
-        pageLayout {
-            MarkdownFilter.markdown {
-                InlineFilter.inline(file: "md/about.md")
-            }
+    func content() -> Node {
+        MarkdownFilter.markdown {
+            InlineFilter.inline(file: "md/about.md")
         }
     }
 }

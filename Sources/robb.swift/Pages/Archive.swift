@@ -6,23 +6,21 @@ struct Archive: Page {
 
     let title = "Archive"
 
-    let url = "archive"
+    let pathComponents = [ "archive" ]
 
-    func render() -> Node {
-        pageLayout {
-            ul {
-                posts
-                    .reversed()
-                    .map { post in
-                        li {
-                            a(href: post.url) {
-                                format(post.date)
-                                " – "
-                                post.title
-                            }
+    func content() -> Node {
+        ul {
+            posts
+                .reversed()
+                .map { post in
+                    li {
+                        a(href: post.path) {
+                            format(post.date)
+                            " – "
+                            post.title
                         }
                     }
-            }
+                }
         }
     }
 }

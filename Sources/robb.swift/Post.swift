@@ -25,7 +25,7 @@ struct Post {
 
 extension Post: Page {
     func render() -> Node {
-        pageLayout(page: self) {
+        pageLayout {
             article {
                 header {
                     h1 {

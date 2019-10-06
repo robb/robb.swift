@@ -7,7 +7,7 @@ struct About: Page {
     let url = "/who-exactly"
 
     func render() -> Node {
-        pageLayout(page: self) {
+        pageLayout {
             MarkdownFilter.markdown {
                 InlineFilter.inline(file: "md/about.md")
             }

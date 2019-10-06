@@ -9,7 +9,7 @@ struct Archive: Page {
     let url = "archive"
 
     func render() -> Node {
-        pageLayout(page: self) {
+        pageLayout {
             ul {
                 posts
                     .reversed()

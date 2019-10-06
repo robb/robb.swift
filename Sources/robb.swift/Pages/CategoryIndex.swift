@@ -15,7 +15,7 @@ struct CategoryIndex: Page {
     }
 
     func render() -> Node {
-        pageLayout(page: self) {
+        pageLayout {
             ul {
                 posts
                     .reversed()

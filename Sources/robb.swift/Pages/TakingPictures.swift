@@ -9,7 +9,7 @@ struct TakingPictures: Page {
     let url: String = "taking-pictures"
 
     func render() -> Node {
-        pageLayout(page: self) {
+        pageLayout {
             posts
                 .sorted { a, b in
                     a.date > b.date

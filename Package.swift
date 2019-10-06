@@ -8,14 +8,18 @@ let package = Package(
     platforms: [
         .macOS(.v10_13)
     ],
+    products: [
+        .executable(name: "robb.swift", targets: ["robb.swift"]),
+    ],
     dependencies: [
+        .package(url: "https://github.com/robb/Future.git", .branch("master")),
         .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
-        .package(url: "https://github.com/iwasrobbed/Down.git", .branch("master")),
-        .package(url: "https://github.com/mxcl/Path.swift.git", from: "0.13.0")
+        .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master")),
+        .package(url: "https://github.com/iwasrobbed/Down.git", .branch("master"))
     ],
     targets: [
         .target(
             name: "robb.swift",
-            dependencies: [ "Down", "HTML", "Path" ])
+            dependencies: [ "Down", "Future", "HTML", "URLRequest+AWS" ])
     ]
 )

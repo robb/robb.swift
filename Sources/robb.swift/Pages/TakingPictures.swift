@@ -6,27 +6,27 @@ struct TakingPictures: Page {
 
     let title: String = "Taking Pictures"
 
-    let url: String = "taking-pictures"
+    let pathComponents = [ "taking-pictures" ]
 
-    func render() -> Node {
-        pageLayout {
-            posts
-                .sorted { a, b in
-                    a.date > b.date
-                }
-                .map { post in
-                    article {
-                        h1 {
-                            a(href: post.url) {
-                                post.title
-                            }
-                        }
-
-                        MarkdownFilter.markdown {
-                            post.content
+    func content() -> Node {
+        posts
+            .sorted { a, b in
+                a.date > b.date
+            }
+            .map { post in
+                article {
+                    h1 {
+                        a(href: post.path) {
+                            post.title
                         }
                     }
+
+                    MarkdownFilter.markdown {
+                        post.body
+                    }
+                }
             }
-        }
+            .asNode()
     }
 }
+

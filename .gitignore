@@ -3,8 +3,7 @@
 /Packages
 /*.xcodeproj
 
+config.json
+
 # Output
 Site/
-
-# Non-Swift Dependencies
-Vendor/

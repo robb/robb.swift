@@ -6,7 +6,16 @@
         "repositoryURL": "https://github.com/iwasrobbed/Down.git",
         "state": {
           "branch": "master",
-          "revision": "805e537949f21a64c46227ca9aa881f16ba93048",
+          "revision": "b99cbca24f7691dc3c3b5a8b1971427482733e8e",
+          "version": null
+        }
+      },
+      {
+        "package": "Future",
+        "repositoryURL": "https://github.com/robb/Future.git",
+        "state": {
+          "branch": "master",
+          "revision": "a2e244080e4fae79bd004f5dc89ac2ac847ae6b2",
           "version": null
         }
       },
@@ -15,17 +24,17 @@
         "repositoryURL": "https://github.com/robb/HTML-DSL.git",
         "state": {
           "branch": "master",
-          "revision": "25d0951c6e29f9a781e391a4928ee39942324a84",
+          "revision": "75bf88a4aee57a5e3db31d26e66f2e7f481a5d3e",
           "version": null
         }
       },
       {
-        "package": "Path.swift",
-        "repositoryURL": "https://github.com/mxcl/Path.swift.git",
+        "package": "URLRequest+AWS",
+        "repositoryURL": "https://github.com/robb/URLRequest-AWS.git",
         "state": {
-          "branch": null,
-          "revision": "f324b4a562ca421fd2905414a10fb0fc91d58b67",
-          "version": "0.16.2"
+          "branch": "master",
+          "revision": "4b908bfd4c7478eaae2232c460d9285d2173b7b8",
+          "version": null
         }
       }
     ]

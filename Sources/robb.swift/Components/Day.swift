@@ -21,23 +21,31 @@ private extension Day {
     }
 }
 
-private let defaultDateFormatter: DateFormatter = {
+private let humanReadableDateFormatter: DateFormatter = {
     let formatter = DateFormatter()
     formatter.calendar = Calendar(identifier: .gregorian)
-    formatter.dateStyle = .medium
+    formatter.dateStyle = .long
     formatter.locale = Locale(identifier: "en-US")
     formatter.timeStyle = .none
+    formatter.timeZone = .current
 
     return formatter
 }()
 
-func format(_ day: Day, dateFormatter: DateFormatter = defaultDateFormatter) -> Node {
+private let isoDateFormatter: ISO8601DateFormatter = {
+    let formatter = ISO8601DateFormatter()
+    formatter.formatOptions = [ .withFullDate, .withDashSeparatorInDate ]
+    formatter.timeZone = .current
+
+    return formatter
+}()
+
+func format(_ day: Day, dateFormatter: DateFormatter = humanReadableDateFormatter) -> Node {
     guard let date = dateFormatter.calendar.date(from: day.dateComponents) else {
-        return Text(value: "Unknown Date")
+        return "Unknown Date"
     }
 
-    // TODO: Add `datetime` attribute
-    return time {
+    return time(datetime: isoDateFormatter.string(from: date)) {
         dateFormatter.string(from: date)
     }
 }

@@ -31,6 +31,7 @@ struct Site {
         let allPages = pages + [
             About(),
             Archive(posts: posts),
+            AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
             FrontPage(),
             TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
         ]
@@ -48,7 +49,7 @@ struct Site {
 
                 let data = String(describing: filtered).data(using: .utf8) ?? Data()
 
-                return Resource(contentType: "text/html", path: page.path, data: data)
+                return Resource(contentType: page.contentType, path: page.path, data: data)
             }
 
         let resourcesDirectory = self.resourcesDirectory

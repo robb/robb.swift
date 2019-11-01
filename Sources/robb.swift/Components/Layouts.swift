@@ -64,6 +64,8 @@ extension Layout {
         ]
     }
 
+    static let empty = Layout { _, content in content() }
+
     static let page = Layout { page, content in
         basic.render(page: page) {
             header(id: "header") {

@@ -15,8 +15,8 @@ extension Day: Comparable {
     }
 }
 
-private extension Day {
-    var dateComponents: DateComponents {
+extension Day {
+    public var dateComponents: DateComponents {
         DateComponents(year: year, month: month, day: day)
     }
 }

@@ -4,6 +4,8 @@ import HTML
 protocol Page {
     static var defaultLayout: Layout { get }
 
+    var contentType: String { get }
+
     var title: String { get }
 
     var pathComponents: [String] { get }
@@ -26,5 +28,11 @@ extension Page {
 extension Page {
     var path: String {
         "/" + pathComponents.joined(separator: "/")
+    }
+}
+
+extension Page {
+    var contentType: String {
+        "text/html"
     }
 }

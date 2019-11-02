@@ -88,9 +88,11 @@ private extension Post {
         let slug = frontMatter["slug"] ?? title.lowercased().replacingOccurrences(of: " ", with: "-")
         let category = frontMatter["category"]
 
+        let isoDateFormatter = ISO8601DateFormatter()
+
         self.category = category
         self.body = body
-        self.date = Day(from: url.lastPathComponent)!
+        self.date = frontMatter["date"].flatMap(isoDateFormatter.date) ?? Date(from: url.lastPathComponent)!
         self.description = frontMatter["description"]
         self.link = frontMatter["link"]
         self.title = title
@@ -99,7 +101,7 @@ private extension Post {
     }
 }
 
-private extension Day {
+private extension Date {
     init?(from title: String) {
         var year = 0, month = 0, day = 0
 
@@ -113,7 +115,13 @@ private extension Day {
                 return nil
         }
 
-        self = Day(year: year, month: month, day: day)
+        let components = DateComponents(year: year, month: month, day: day)
+
+        if let date = Calendar(identifier: .gregorian).date(from: components) {
+            self = date
+        } else {
+            return nil
+        }
     }
 }
 

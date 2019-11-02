@@ -8,7 +8,7 @@ struct Post {
 
     var category: String?
 
-    var date: Day
+    var date: Date
 
     var description: String?
 

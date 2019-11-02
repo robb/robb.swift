@@ -93,10 +93,8 @@ extension AtomFeed {
         .element("id", [:], %children().asNode()%)
     }
 
-    private func updated(day: () -> Day) -> Node {
-        let date = Calendar(identifier: .gregorian).date(from: day().dateComponents)!
-
-        return .element("updated", [:], %.text(dateFormatter.string(from: date))%)
+    private func updated(date: () -> Date) -> Node {
+        .element("updated", [:], %.text(dateFormatter.string(from: date()))%)
     }
 
     private func entry(@NodeBuilder children: () -> NodeConvertible) -> Node {

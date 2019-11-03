@@ -15,11 +15,11 @@ let package = Package(
         .package(url: "https://github.com/robb/Future.git", .branch("master")),
         .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
         .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master")),
-        .package(url: "https://github.com/iwasrobbed/Down.git", .branch("master"))
+        .package(url: "https://github.com/apple/swift-cmark.git", .branch("master"))
     ],
     targets: [
         .target(
             name: "robb.swift",
-            dependencies: [ "Down", "Future", "HTML", "URLRequest+AWS" ])
+            dependencies: [ "cmark", "Future", "HTML", "URLRequest+AWS" ])
     ]
 )

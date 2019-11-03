@@ -1,9 +1,6 @@
-import Down
-import class Down.Text
-import protocol Down.Visitor
 import Foundation
-import libcmark
 import HTML
+import cmark
 
 /// This filter converts all its text node children from Markdown to HTML.
 ///
@@ -27,31 +24,29 @@ import HTML
 /// </section>
 /// ```
 struct MarkdownFilter: Filter {
-    static func markdown(@NodeBuilder content: () -> NodeConvertible) -> HTML.Node {
+    static func markdown(@NodeBuilder content: () -> NodeConvertible) -> Node {
         .element(name: "custom-markdown", child: content().asNode())
     }
 
-    static func render(_ string: String) -> HTML.Node? {
-        let ast = try! Down(markdownString: string).toAST()
+    static func render(_ string: String) -> Node? {
+        let parser = MarkdownParser(document: string)
 
-        let document = ast.wrap() as? Document
-
-        return document!.accept(MarkdownToHTMLVisitor())
+        return parser.parse()
     }
 
-    func apply(node: HTML.Node) -> HTML.Node {
+    func apply(node: Node) -> Node {
         let visitor = MarkdownFilterVisitor()
 
         return visitor.visitNode(node)
     }
 }
 
-private final class MarkdownFilterVisitor: HTML.Visitor {
-    typealias Result = HTML.Node
+private final class MarkdownFilterVisitor: Visitor {
+    typealias Result = Node
 
     var isInsideMarkdownTag = false
 
-    func visitElement(name: String, attributes: [String : String], child: HTML.Node) -> HTML.Node {
+    func visitElement(name: String, attributes: [String : String], child: Node) -> Node {
         guard name == "custom-markdown" else {
             return .element(name: name, attributes: attributes, child: visitNode(child))
         }
@@ -64,47 +59,107 @@ private final class MarkdownFilterVisitor: HTML.Visitor {
         return visitNode(child)
     }
 
-    func visitText(text: String) -> HTML.Node {
+    func visitText(text: String) -> Node {
         guard isInsideMarkdownTag else { return .text(text) }
 
         return MarkdownFilter.render(text) ?? ""
     }
 }
 
-private final class MarkdownToHTMLVisitor: Visitor {
-    func visit(document node: Document) -> HTML.Node? {
+private final class MarkdownParser {
+    private var root: OpaquePointer?
+
+    init(document: String) {
+        root = document.withCString { body in
+            cmark_parse_document(body, strlen(body), 0)
+        }
+    }
+
+    deinit {
+        cmark_node_free(root)
+    }
+
+    func parse() -> Node? {
+        root.flatMap(visitNode)
+    }
+
+    func visitNode(_ node: OpaquePointer) -> Node? {
+        switch cmark_node_get_type(node) {
+        case CMARK_NODE_DOCUMENT:       return visit(document: node)
+        case CMARK_NODE_BLOCK_QUOTE:    return visit(blockQuote: node)
+        case CMARK_NODE_LIST:           return visit(list: node)
+        case CMARK_NODE_ITEM:           return visit(item: node)
+        case CMARK_NODE_CODE_BLOCK:     return visit(codeBlock: node)
+        case CMARK_NODE_HTML_BLOCK:     return visit(htmlBlock: node)
+        case CMARK_NODE_CUSTOM_BLOCK:   return visit(customBlock: node)
+        case CMARK_NODE_PARAGRAPH:      return visit(paragraph: node)
+        case CMARK_NODE_HEADING:        return visit(heading: node)
+        case CMARK_NODE_THEMATIC_BREAK: return visit(thematicBreak: node)
+
+        case CMARK_NODE_TEXT:           return visit(text: node)
+        case CMARK_NODE_SOFTBREAK:      return visit(softBreak: node)
+        case CMARK_NODE_LINEBREAK:      return visit(lineBreak: node)
+        case CMARK_NODE_CODE:           return visit(code: node)
+        case CMARK_NODE_HTML_INLINE:    return visit(htmlInline: node)
+        case CMARK_NODE_CUSTOM_INLINE:  return visit(customInline: node)
+        case CMARK_NODE_EMPH:           return visit(emphasis: node)
+        case CMARK_NODE_STRONG:         return visit(strong: node)
+        case CMARK_NODE_LINK:           return visit(link: node)
+        case CMARK_NODE_IMAGE:          return visit(image: node)
+        default:
+            return nil
+        }
+    }
+
+    func visitChildren(of node: OpaquePointer?) -> [Node] {
+        var current = cmark_node_first_child(node)
+
+        let iterator = AnyIterator<OpaquePointer> {
+            defer {
+                current = cmark_node_next(current)
+            }
+
+            return current
+        }
+
+        return iterator.compactMap(visitNode)
+    }
+
+    func visit(document node: OpaquePointer) -> Node? {
         article(classes: "markdown") {
             visitChildren(of: node)
         }
     }
 
-    func visit(blockQuote node: BlockQuote) -> HTML.Node? {
+    func visit(blockQuote node: OpaquePointer) -> Node? {
         blockquote {
             visitChildren(of: node)
         }
     }
 
-    func visit(list node: List) -> HTML.Node? {
-        switch node.listType {
-        case .bullet:
+    func visit(list node: OpaquePointer) -> Node? {
+        switch cmark_node_get_list_type(node) {
+        case CMARK_BULLET_LIST:
             return ul {
                 visitChildren(of: node)
             }
-        case .ordered:
+        case CMARK_ORDERED_LIST:
             return ol {
                 visitChildren(of: node)
             }
+       default:
+            return nil
         }
     }
 
-    func visit(item node: Item) -> HTML.Node? {
+    func visit(item node: OpaquePointer) -> Node? {
         li {
             visitChildren(of: node)
         }
     }
 
-    func visit(codeBlock node: CodeBlock) -> HTML.Node? {
-        guard let content = node.literal else { return nil }
+    func visit(codeBlock node: OpaquePointer) -> Node? {
+        let content = String(cString: cmark_node_get_literal(node))
 
         return figure(classes: "highlight") {
             pre {
@@ -115,22 +170,24 @@ private final class MarkdownToHTMLVisitor: Visitor {
         }
     }
 
-    func visit(htmlBlock node: HtmlBlock) -> HTML.Node? {
-        .text(node.literal ?? "")
+    func visit(htmlBlock node: OpaquePointer) -> Node? {
+        let content = String(cString: cmark_node_get_literal(node))
+
+        return .text(content)
     }
 
-    func visit(customBlock node: CustomBlock) -> HTML.Node? {
+    func visit(customBlock node: OpaquePointer) -> Node? {
         fatalError("What is a CustomBlock?")
     }
 
-    func visit(paragraph node: Paragraph) -> HTML.Node? {
+    func visit(paragraph node: OpaquePointer) -> Node? {
         p {
             visitChildren(of: node)
         }
     }
 
-    func visit(heading node: Heading) -> HTML.Node? {
-        switch node.headingLevel {
+    func visit(heading node: OpaquePointer) -> Node? {
+        switch cmark_node_get_heading_level(node) {
         case 2:
             return h2 { visitChildren(of: node) }
         case 3:
@@ -146,61 +203,65 @@ private final class MarkdownToHTMLVisitor: Visitor {
         }
     }
 
-    func visit(thematicBreak node: ThematicBreak) -> HTML.Node? {
+    func visit(thematicBreak node: OpaquePointer) -> Node? {
         hr()
     }
 
-    func visit(text node: Text) -> HTML.Node? {
-        guard let content = node.literal else { return nil }
+    func visit(text node: OpaquePointer) -> Node? {
+        let content = String(cString: cmark_node_get_literal(node))
 
         return .text(content)
     }
 
-    func visit(softBreak node: SoftBreak) -> HTML.Node? {
+    func visit(softBreak node: OpaquePointer) -> Node? {
         .text("")
     }
 
-    func visit(lineBreak node: LineBreak) -> HTML.Node? {
+    func visit(lineBreak node: OpaquePointer) -> Node? {
         br()
     }
 
-    func visit(code node: Code) -> HTML.Node? {
-        guard let content = node.literal else { return nil }
+    func visit(code node: OpaquePointer) -> Node? {
+        let content = String(cString: cmark_node_get_literal(node))
 
         return %code { content }%
     }
 
-    func visit(htmlInline node: HtmlInline) -> HTML.Node? {
-        .text(node.literal ?? "")
+    func visit(htmlInline node: OpaquePointer) -> Node? {
+        let content = String(cString: cmark_node_get_literal(node))
+
+        return .text(content)
     }
 
-    func visit(customInline node: CustomInline) -> HTML.Node? {
+    func visit(customInline node: OpaquePointer) -> Node? {
         fatalError("What is a CustomInline?")
     }
 
-    func visit(emphasis node: Emphasis) -> HTML.Node? {
+    func visit(emphasis node: OpaquePointer) -> Node? {
         %em {
             visitChildren(of: node)
         }%
     }
 
-    func visit(strong node: Strong) -> HTML.Node? {
+    func visit(strong node: OpaquePointer) -> Node? {
         %strong {
             visitChildren(of: node)
         }%
     }
 
-    func visit(link node: Link) -> HTML.Node? {
-        %a(href: node.url, title: node.title) {
+    func visit(link node: OpaquePointer) -> Node? {
+        let url = String(cString: cmark_node_get_url(node))
+        let title = String(cString: cmark_node_get_title(node))
+
+        return %a(href: url, title: title) {
             visitChildren(of: node)
         }%
     }
 
-    func visit(image node: Image) -> HTML.Node? {
-        img(src: node.url, title: node.title)
-    }
+    func visit(image node: OpaquePointer) -> Node? {
+        let url = String(cString: cmark_node_get_url(node))
+        let title = String(cString: cmark_node_get_title(node))
 
-    func visitChildren(of node: BaseNode) -> [HTML.Node] {
-        visitChildren(of: node).compactMap { $0 }
+        return img(src: url, title: title)
     }
 }

@@ -97,7 +97,7 @@ private extension Post {
         self.link = frontMatter["link"]
         self.title = title
         self.pathComponents = frontMatter["permalink"]?.pathComponents
-            ?? [ category, slug ].compactMap { $0 }
+            ?? [ category, slug ].compactMap { $0?.trimmingTrailingSlash() }
     }
 }
 

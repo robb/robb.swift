@@ -2,8 +2,6 @@
 
 My personal website, ported from Jekyll to Swift.
 
-🚧 Everything here is very much WIP, proceed with caution. 🚧
-
 #### Before:
 
 ```
@@ -21,6 +19,7 @@ Configuration file: /Users/robb/projects/robb.is/_config.yml
 #### After
 
 ```
-$ time swift run
-        0.46 real         0.72 user         0.77 sys
+$ time swift run robb.swift build
+Building site
+        0.31 real         0.73 user         0.19 sys
 ```

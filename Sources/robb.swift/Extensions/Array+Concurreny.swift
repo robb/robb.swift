@@ -13,13 +13,9 @@ public extension Array {
             }
         }
 
-        var result: [B] = []
-
-        intermediate.atomically {
-            result = $0.map { $0! }
+        return intermediate.atomically {
+            $0.map { $0! }
         }
-
-        return result
     }
 
     func concurrentForEach(_ body: (Self.Element) -> Void) {

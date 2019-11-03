@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Down",
-        "repositoryURL": "https://github.com/iwasrobbed/Down.git",
-        "state": {
-          "branch": "master",
-          "revision": "b99cbca24f7691dc3c3b5a8b1971427482733e8e",
-          "version": null
-        }
-      },
-      {
         "package": "Future",
         "repositoryURL": "https://github.com/robb/Future.git",
         "state": {
@@ -25,6 +16,15 @@
         "state": {
           "branch": "master",
           "revision": "75bf88a4aee57a5e3db31d26e66f2e7f481a5d3e",
+          "version": null
+        }
+      },
+      {
+        "package": "cmark",
+        "repositoryURL": "https://github.com/apple/swift-cmark.git",
+        "state": {
+          "branch": "master",
+          "revision": "bfa95d55b535fa178f75484b5e8f82ae3d8517af",
           "version": null
         }
       },

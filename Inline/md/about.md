@@ -33,19 +33,6 @@ An Objective-C library for manipulating data structures.
 Another Objective-C library for manipulating data structures.
 - [… and more][github].
 
-### Apps
-
-- [SoundCloud for iOS](http://itunes.apple.com/en/app/soundcloud/id336353151)<br>
-The official SoundCloud app for iPhone and iPad.
-- [SoundCloud for Android](https://play.google.com/store/apps/details?id=com.soundcloud.android)<br>
-The official SoundCloud Android app.
-- [Automatic](https://itunes.apple.com/us/app/automatic/id1017156678)<br>
-The official Automatic iPhone app.
-- [The Artsy iPhone app](/working-on/artsy-iphone-app)<br>
-The official Artsy iPhone app.
-- SoundCloud Desktop<br>
-The official SoundCloud app for OS X (discontinued).
-
 ### Talks
 
 - [Mastering Drag and Drop](https://developer.apple.com/videos/play/wwdc2017/213/) ([blog post](/speaking-at/WWDC-2017))<br>
@@ -69,6 +56,19 @@ My article on CoreAnimation for objc.io #12.
 A small tutorial how to build a slick transitions for a Hamburger Button
 - [How to build awesome CSS envelopes](/working-on/css-envelopes)<br>
 A small tutorial how to build nice-looking envelopes with HTML & CSS
+
+### Apps
+
+- [SoundCloud for iOS](http://itunes.apple.com/en/app/soundcloud/id336353151)<br>
+The official SoundCloud app for iPhone and iPad.
+- [SoundCloud for Android](https://play.google.com/store/apps/details?id=com.soundcloud.android)<br>
+The official SoundCloud Android app.
+- [Automatic](https://itunes.apple.com/us/app/automatic/id1017156678)<br>
+The official Automatic iPhone app.
+- [The Artsy iPhone app](/working-on/artsy-iphone-app)<br>
+The official Artsy iPhone app.
+- SoundCloud Desktop<br>
+The official SoundCloud app for OS X (discontinued).
 
 [soundcloud_android]: https://play.google.com/store/apps/details?id=com.soundcloud.android
 [soundcloud_ios]:     http://itunes.apple.com/en/app/soundcloud/id336353151

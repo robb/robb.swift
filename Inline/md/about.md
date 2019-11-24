@@ -40,7 +40,7 @@ My talk at WWDC 2017 on the lower level Drag and Drop APIs introduced in iOS 11.
 - [Let's Talk about ReactiveCocoa! - HD™ ✨](/speaking-at/brooklyn-ios-meetup-feb-2014)<br>
 A 1080p version of my ReactiveCocoa talk I gave at the Brooklyn iOS Developer Meetup.
 - [My talk at Cocoa Kucha Berlin 2014](/speaking-at/cocoa-kucha-berlin)<br>
-A brief talk about Mante for the Cocoa Kucha Berlin.
+A brief talk about Mantle for the Cocoa Kucha Berlin.
 - [Let's Talk about ReactiveCocoa!](/speaking-at/nsspain-2013)<br>
 My talk for NSSpain 2013.
 - [My talk at CocoaHeads Berlin, August 2013](/speaking-at/coocaheads-august-2013)<br>

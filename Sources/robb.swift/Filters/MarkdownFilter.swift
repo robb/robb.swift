@@ -161,7 +161,9 @@ private final class MarkdownParser {
     func visit(codeBlock node: OpaquePointer) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return figure(classes: "highlight") {
+        let language = String(cString: cmark_node_get_fence_info(node))
+
+        return figure(classes: "highlight", "language-\(language)") {
             pre {
                 %code {
                     content

@@ -19,6 +19,8 @@ A native implementation of the Xamarin Insights Framework for iOS
 
 ### Open Source
 
+- [NES.swift](https://github.com/robb/NES.swift)<br>
+An emulator for the Nintendo Entertainment System, written in pure Swift
 - [Cartography](https://github.com/robb/Cartography) ([blog post](/working-on/cartography))<br>
 Declarative Auto Layout in Swift
 - [Carthage](https://github.com/Carthage/Carthage)<br>

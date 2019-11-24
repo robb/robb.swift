@@ -35,6 +35,11 @@ An Objective-C library for manipulating data structures.
 Another Objective-C library for manipulating data structures.
 - [… and more][github].
 
+### Patents
+
+- [Drag and Drop for Touchscreen Devices](https://patents.google.com/patent/US10444976B2)<br>
+  US Patent 10444976B2 · Granted 2019-10-15 · Apple Inc. · Bruce D. Nilo et. al.
+
 ### Talks
 
 - [Mastering Drag and Drop](https://developer.apple.com/videos/play/wwdc2017/213/) ([blog post](/speaking-at/WWDC-2017))<br>

@@ -64,7 +64,9 @@ struct AtomFeed: Page {
 
                             let filtered = markdownFilter.apply(node: unfiltered)
 
-                            return String(describing: filtered).addingXMLEncoding()
+                            return String(describing: filtered)
+                                .trimmingCharacters(in: .whitespaces)
+                                .addingXMLEncoding()
                         }
                     }
                 }
@@ -111,14 +113,5 @@ extension AtomFeed {
 
     private func content(type: String = "text", children: () -> String) -> Node {
         .element("content", [ "type": type ], children().asNode())
-    }
-}
-
-private extension String {
-    func addingXMLEncoding() -> String {
-        trimmingCharacters(in: .whitespaces)
-            .replacingOccurrences(of: "&", with: "&amp;")
-            .replacingOccurrences(of: "<", with: "&lt;")
-            .replacingOccurrences(of: ">", with: "&gt;")
     }
 }

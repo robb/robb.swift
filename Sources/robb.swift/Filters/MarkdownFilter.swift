@@ -46,9 +46,9 @@ private final class MarkdownFilterVisitor: Visitor {
 
     var isInsideMarkdownTag = false
 
-    func visitElement(name: String, attributes: [String : String], child: Node) -> Node {
+    func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         guard name == "custom-markdown" else {
-            return .element(name: name, attributes: attributes, child: visitNode(child))
+            return .element(name: name, attributes: attributes, child: child.map(visitNode))
         }
 
         isInsideMarkdownTag = true
@@ -56,7 +56,7 @@ private final class MarkdownFilterVisitor: Visitor {
             isInsideMarkdownTag = false
         }
 
-        return visitNode(child)
+        return child.map(visitNode) ?? .fragment([])
     }
 
     func visitText(text: String) -> Node {

@@ -22,9 +22,9 @@ private final class InlineFilterVisitor: Visitor {
         self.baseURL = baseURL
     }
 
-    func visitElement(name: String, attributes: [String : String], child: Node) -> Node {
+    func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         guard name == "custom-inline", let path = attributes["path"] else {
-            return .element(name: name, attributes: attributes, child: visitNode(child))
+            return .element(name: name, attributes: attributes, child: child.map(visitNode))
         }
 
         let url = URL(fileURLWithPath: path, relativeTo: baseURL)

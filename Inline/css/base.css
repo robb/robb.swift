@@ -218,19 +218,26 @@ article ul li:before {
     top: -1px;
 }
 
-@media (max-width: 45rem) {
-    article ol {
-        counter-reset: list-item;
-    }
+article ol {
+    counter-reset: list-item 1;
+}
 
-    article ol li {
-        counter-increment: list-item;
-        list-style-type: none;
-    }
+article ol li {
+    counter-increment: list-item;
+    list-style-type: none;
+    margin-left: 2rem;
+    position: relative;
+}
 
-    article ol li:before {
-        content: counter(list-item) ". ";
-    }
+article ol li:before {
+    text-align: right;
+    content: counter(list-item) ".";
+    font-variant-numeric: tabular-nums;
+    left: -3.0rem;
+    width: 2.7rem;
+    overflow: visible;
+
+    position: absolute;
 }
 
 article code, article pre {

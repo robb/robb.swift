@@ -163,9 +163,9 @@ private final class MarkdownParser {
 
         let language = String(cString: cmark_node_get_fence_info(node))
 
-        return figure(classes: "highlight", "language-\(language)") {
+        return figure(classes: "highlight") {
             pre {
-                %code {
+                %code(classes: "language-\(language)") {
                     content
                 }%
             }

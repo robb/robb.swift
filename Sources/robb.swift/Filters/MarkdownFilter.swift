@@ -56,7 +56,7 @@ private final class MarkdownFilterVisitor: Visitor {
             isInsideMarkdownTag = false
         }
 
-        return child.map(visitNode) ?? .fragment([])
+        return child.map(visitNode) ?? []
     }
 
     func visitText(text: String) -> Node {

@@ -20,7 +20,7 @@ private final class PrismVisitor: Visitor {
         return .element(name: name, attributes: attributes, child: [
             DependencyFilter.dependency(javascript: "/js/prism.js", async: true),
             DependencyFilter.dependency(stylesheet: "/css/prism.css"),
-            child.map(visitNode) ?? .fragment([])
+            child.map(visitNode) ?? []
         ])
     }
 }

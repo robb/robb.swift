@@ -42,7 +42,7 @@ private final class DependencyFindingVisitor: Visitor {
                 dependencies.append(dependency)
             }
 
-            return .fragment([])
+            return []
         }
 
         if name == "custom-stylesheet-dependency" {
@@ -52,7 +52,7 @@ private final class DependencyFindingVisitor: Visitor {
                 dependencies.append(dependency)
             }
 
-            return .fragment([])
+            return []
         }
 
         return .element(name: name, attributes: attributes, child: child.map(visitNode))

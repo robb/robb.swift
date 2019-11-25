@@ -166,7 +166,7 @@ private final class MarkdownParser {
         return figure(classes: "highlight") {
             pre {
                 %code(classes: "language-\(language)") {
-                    content
+                    content.addingXMLEncoding()
                 }%
             }
         }
@@ -226,7 +226,7 @@ private final class MarkdownParser {
     func visit(code node: OpaquePointer) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return %code { content }%
+        return %code { content.addingXMLEncoding() }%
     }
 
     func visit(htmlInline node: OpaquePointer) -> Node? {

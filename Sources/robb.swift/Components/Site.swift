@@ -12,7 +12,9 @@ struct Site {
     init(baseDirectory baseURL: URL) throws {
         filters = [
             InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
-            MarkdownFilter()
+            MarkdownFilter(),
+            PrismFilter(),
+            DependencyFilter()
         ]
 
         generators = [

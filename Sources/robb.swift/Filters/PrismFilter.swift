@@ -1,8 +1,8 @@
 import Foundation
 import HTML
 
-/// Automatically sets up a dependency to prism.js for every `code` element has
-/// a `language-xxx` class
+/// Automatically sets up a dependency to prism.js for every `figure` element
+/// that has a `highlight` class
 struct PrismFilter: Filter {
     func apply(node: Node) -> Node {
         let visitor = PrismVisitor()
@@ -13,7 +13,7 @@ struct PrismFilter: Filter {
 
 private final class PrismVisitor: Visitor {
     func visitElement(name: String, attributes: [String: String], child: Node?) -> Node {
-        guard name == "code" && attributes.hasLanguageClass else {
+        guard name == "figure" && attributes.hasHighlightClass else {
             return .element(name: name, attributes: attributes, child: child.map(visitNode))
         }
 
@@ -25,10 +25,10 @@ private final class PrismVisitor: Visitor {
     }
 }
 
-extension Dictionary where Key == String, Value == String {
-    var hasLanguageClass: Bool {
+private extension Dictionary where Key == String, Value == String {
+    var hasHighlightClass: Bool {
         self["class"]?
             .split(separator: " ")
-            .contains { $0.hasPrefix("language-") } ?? false
+            .contains("highlight") ?? false
     }
 }

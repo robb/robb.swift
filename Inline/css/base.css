@@ -89,18 +89,35 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     }
 }
 
-p, blockquote, ul, ol {
+p, blockquote, ul, ol, details {
     -webkit-hyphens: auto;
     hanging-punctuation: first;
     hyphens: auto;
     margin-bottom: 1.25rem;
 }
 
+details {
+    background-color: rgba(0, 0, 0, 0.1);
+    background-blend-mode: darken;
+
+    padding: 1rem;
+    margin: -0.5rem 0 1.25rem -0.5rem;
+    border-radius: 4px;
+}
+
+details summary {
+    cursor: pointer;
+}
+
+details summary + * {
+    margin-top: 0.75rem;
+}
+
 li {
     margin-bottom: 0.625rem;
 }
 
-p:last-child, blockquote:last-child, ul:last-child, ol:last-child, li:last-child {
+p:last-child, blockquote:last-child, ul:last-child, ol:last-child, li:last-child, details:last-child {
     margin-bottom: 0;
 }
 
@@ -251,12 +268,9 @@ article .highlight {
     background-color: rgba(30, 30, 30, 1);
     border-radius: 4px;
     overflow-x: scroll;
-}
-
-article .highlight {
     padding: 1rem;
     color: white;
-    margin-bottom: 1.25rem;
+    margin: -0.5rem 0 1.25rem -0.5rem;
 }
 
 article section.markdown {

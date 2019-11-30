@@ -48,6 +48,20 @@ extension Layout {
 
                     meta(content: "width=device-width, initial-scale=1.0", name: "viewport")
 
+                    (page as? Post).map { post -> Node in
+                        return .fragment([
+                            meta(content: "summary", name: "twitter:card"),
+                            meta(content: "@DLX", name: "twitter:site"),
+                            meta(content: post.title, name: "twitter:title"),
+                            post.image.map {
+                                meta(content: "https://robb.is" + $0, name: "twitter:image")
+                            },
+                            post.description.map {
+                                meta(content: $0, name: "twitter:description")
+                            }
+                        ].compactMap { $0 })
+                    } ?? []
+
                     title {
                         page.title; "– robb.is"
                     }

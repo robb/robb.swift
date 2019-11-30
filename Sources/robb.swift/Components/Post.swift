@@ -14,6 +14,8 @@ struct Post {
 
     var isProject: Bool = false
 
+    var image: String?
+
     var link: String?
 
     var pathComponents: [String]

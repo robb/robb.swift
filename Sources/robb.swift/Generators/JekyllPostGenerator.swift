@@ -94,6 +94,7 @@ private extension Post {
         self.body = body
         self.date = frontMatter["date"].flatMap(isoDateFormatter.date) ?? Date(from: url.lastPathComponent)!
         self.description = frontMatter["description"]
+        self.image = frontMatter["image"]
         self.link = frontMatter["link"]
         self.title = title
         self.pathComponents = frontMatter["permalink"]?.pathComponents

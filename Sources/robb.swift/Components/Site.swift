@@ -30,11 +30,17 @@ struct Site {
 
         let posts = pages.compactMap { $0 as? Post }
 
+        let highlight = posts
+            .filter { $0.category == "working-on" }
+            .max { a, b in
+                a.date < b.date
+            }!
+
         let allPages = pages + [
             About(),
             Archive(posts: posts),
             AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
-            FrontPage(),
+            FrontPage(highlight: highlight),
             TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
         ]
 

@@ -3,7 +3,7 @@ title: Implementing a Peel-Off Animation
 description: Let's build Messages.app's sticker peel-off animation with SceneKit.
 category: working-on
 slug: a-peel-off-animation
-image: /img/stickers/hero.png
+image: /img/stickers/complete.png
 ---
 
 One of my favorite moments of surprise and delight in iOS is the peel-off
@@ -272,8 +272,8 @@ I experimented with [the sparsely documented displacement
 material][displacement], but I had seen some odd artifacts where the vertices
 would not interpolate smoothly during the animation. I also found it slightly
 easier to update the vertices in a shader modifier rather than first writing the
-gradient a intermediary texture every. At that point, using the same approach
-for the reflection seemed conceptually simpler, too.
+gradient into an intermediary texture every time. At that point, using the same
+approach for the reflection seemed conceptually simpler, too.
 
 That said, you might want to reconsider the approach in this article and
 investigate displacement maps on your own app.

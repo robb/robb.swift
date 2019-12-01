@@ -35,10 +35,34 @@ An Objective-C library for manipulating data structures.
 Another Objective-C library for manipulating data structures.
 - [… and more][github].
 
+### Writing
+
+- [Implementing a Peel-Off Animation](/working-on/a-peel-off-animation)<br>
+How to recreate Messages.app's sticker peel off animation
+- [Animations Explained](http://www.objc.io/issue-12/animations-explained.html)<br>
+My article on CoreAnimation for objc.io #12.
+- [How to build a nice Hamburger Button transition in Swift](/working-on/a-hamburger-button-transition)<br>
+A small tutorial how to build a slick transitions for a Hamburger Button
+- [How to build awesome CSS envelopes](/working-on/css-envelopes)<br>
+A tutorial how to build nice-looking envelopes with HTML & CSS
+
 ### Patents
 
 - [Drag and Drop for Touchscreen Devices](https://patents.google.com/patent/US10444976B2)<br>
   US Patent 10444976B2 · Granted 2019-10-15 · Apple Inc. · Bruce D. Nilo et. al.
+
+### Apps
+
+- [SoundCloud for iOS](http://itunes.apple.com/en/app/soundcloud/id336353151)<br>
+The official SoundCloud app for iPhone and iPad.
+- [SoundCloud for Android](https://play.google.com/store/apps/details?id=com.soundcloud.android)<br>
+The official SoundCloud Android app.
+- [Automatic](https://itunes.apple.com/us/app/automatic/id1017156678)<br>
+The official Automatic iPhone app.
+- [The Artsy iPhone app](/working-on/artsy-iphone-app)<br>
+The official Artsy iPhone app.
+- SoundCloud Desktop<br>
+The official SoundCloud app for OS X (discontinued).
 
 ### Talks
 
@@ -54,28 +78,6 @@ My talk for NSSpain 2013.
 It's about Underscore.m and Asterism.
 - [My talk for UIKonf 2013](/speaking-at/uikonf-2013)<br>
 It's about ReactiveCocoa.
-
-### Writing
-
-- [Animations Explained](http://www.objc.io/issue-12/animations-explained.html)<br>
-My article on CoreAnimation for objc.io #12.
-- [How to build a nice Hamburger Button transition in Swift](/working-on/a-hamburger-button-transition)<br>
-A small tutorial how to build a slick transitions for a Hamburger Button
-- [How to build awesome CSS envelopes](/working-on/css-envelopes)<br>
-A small tutorial how to build nice-looking envelopes with HTML & CSS
-
-### Apps
-
-- [SoundCloud for iOS](http://itunes.apple.com/en/app/soundcloud/id336353151)<br>
-The official SoundCloud app for iPhone and iPad.
-- [SoundCloud for Android](https://play.google.com/store/apps/details?id=com.soundcloud.android)<br>
-The official SoundCloud Android app.
-- [Automatic](https://itunes.apple.com/us/app/automatic/id1017156678)<br>
-The official Automatic iPhone app.
-- [The Artsy iPhone app](/working-on/artsy-iphone-app)<br>
-The official Artsy iPhone app.
-- SoundCloud Desktop<br>
-The official SoundCloud app for OS X (discontinued).
 
 [soundcloud_android]: https://play.google.com/store/apps/details?id=com.soundcloud.android
 [soundcloud_ios]:     http://itunes.apple.com/en/app/soundcloud/id336353151

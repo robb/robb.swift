@@ -8,6 +8,8 @@ struct FrontPage: Page {
 
     let pathComponents = [] as [String]
 
+    var highlight: Page
+
     func content() -> Node {
         header(id: "header") {
             style(type: "text/css") {
@@ -53,8 +55,10 @@ struct FrontPage: Page {
             p {
                 "You can check out some of my"
                 a(href: "/taking-pictures") { "photos" }
-                "or learn"
-                a(href: "/who-exactly") { "more about me" } %% "."
+                %% ", learn"
+                a(href: "/who-exactly") { "more about me" }
+                "or read about my latest project:"
+                a(href: highlight.path) { highlight.title } %% "."
             }
 
             script(type: "text/javascript") {

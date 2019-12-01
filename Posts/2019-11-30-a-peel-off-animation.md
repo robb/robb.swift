@@ -107,7 +107,7 @@ where `dimension` is the maximum of either width or height of the sticker and
 
 We can then use this distance when setting up the camera node. To make sure we
 don't move the camera away too far from the node, we set `zFar` to a bigger
-value to make our sticker will definitely get drawn.
+value to make sure our sticker will definitely get drawn.
 
 ```swift
 let cameraNode = SCNNode()

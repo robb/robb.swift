@@ -35,9 +35,9 @@ was implemented, but my guess is that the deformation is using a
 [`CAMeshTransform`][mesh] under the hood.
 
 Sadly, that class is not public and getting access to private API usually
-requires one to relocate to the Cupertino area. So let's try to stay were we are
-and reimplement it using only public API, that also helps us remain in the good
-graces of the App Store review team.
+requires one to relocate to the Cupertino area. So let's try to stay where we
+are and reimplement it using only public API, that also helps us remain in the
+good graces of the App Store review team.
 
 One caveat: I was not trying to re-create the animation pixel-perfectly.
 Instead, consider this blog post as a sketch of the general idea and a start-off

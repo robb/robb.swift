@@ -7,9 +7,9 @@ image: /img/stickers/complete.png
 ---
 
 One of my favorite moments of surprise and delight in iOS is the peel-off
-animation you see when users you send a sticker to someone in Messages. In this
-post, I'll go over how to recreate this animation in SceneKit and how to
-integrate it into a normal UIKit app. For context, [this is what it looks
+animation you see when you send a sticker to someone in Messages. In this post,
+I'll go over how to recreate this animation in SceneKit and how to integrate it
+into a normal UIKit app. For context, [this is what it looks
 like][stickers-video].
 
 If you look at the animation closely, you can make out multiple separate

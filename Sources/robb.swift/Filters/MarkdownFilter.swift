@@ -17,11 +17,9 @@ import cmark
 /// will render as
 ///
 /// ```html
-/// <section>
-///     <h1>Hello</h1>
+/// <h1>Hello</h1>
 ///
-///     You are Johnny Appleseed
-/// </section>
+/// You are Johnny Appleseed
 /// ```
 struct MarkdownFilter: Filter {
     static func markdown(@NodeBuilder content: () -> NodeConvertible) -> Node {
@@ -126,9 +124,7 @@ private final class MarkdownParser {
     }
 
     func visit(document node: OpaquePointer) -> Node? {
-        article(classes: "markdown") {
-            visitChildren(of: node)
-        }
+        .fragment(visitChildren(of: node))
     }
 
     func visit(blockQuote node: OpaquePointer) -> Node? {

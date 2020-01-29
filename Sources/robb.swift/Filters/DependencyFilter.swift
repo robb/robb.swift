@@ -8,7 +8,7 @@ struct DependencyFilter: Filter {
 
         let stripped = finder.visitNode(node)
 
-        let injector = DependencyInjectingVisitor(dependencies: finder.dependencies)
+        let injector = DependencyInjectingVisitor(nodesToInject: finder.nodesToInject)
 
         return injector.visitNode(stripped)
     }
@@ -22,34 +22,29 @@ struct DependencyFilter: Filter {
     }
 
     static func dependency(stylesheet path: String) -> Node {
-        return Node.element("custom-stylesheet-dependency", [ "href": path ], nil)
+        return Node.element("custom-stylesheet-dependency", [ "href": path, "rel": "stylesheet" ], nil)
     }
 }
 
-private enum Dependency: Equatable {
-    case script(src: String, async: String?)
-    case stylesheet(href: String)
-}
-
 private final class DependencyFindingVisitor: Visitor {
-    var dependencies: [Dependency] = []
+    var nodesToInject: [Node] = []
 
     func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         if name == "custom-script-dependency" {
-            let dependency = Dependency.script(src: attributes["src"]!, async: attributes["async"])
+            let dependency = Node.element("script", attributes, [])
 
-            if !dependencies.contains(dependency) {
-                dependencies.append(dependency)
+            if !nodesToInject.contains(dependency) {
+                nodesToInject.append(dependency)
             }
 
             return []
         }
 
         if name == "custom-stylesheet-dependency" {
-            let dependency = Dependency.stylesheet(href: attributes["href"]!)
+            let dependency = Node.element("link", attributes, nil)
 
-            if !dependencies.contains(dependency) {
-                dependencies.append(dependency)
+            if !nodesToInject.contains(dependency) {
+                nodesToInject.append(dependency)
             }
 
             return []
@@ -60,28 +55,21 @@ private final class DependencyFindingVisitor: Visitor {
 }
 
 private final class DependencyInjectingVisitor: Visitor {
-    var dependencies: [Dependency]
+    var nodesToInject: [Node]
 
-    init(dependencies: [Dependency]) {
-        self.dependencies = dependencies
+    init(nodesToInject: [Node]) {
+        self.nodesToInject = nodesToInject
     }
 
     func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         if name == "head" {
-            var tags = dependencies.map { dependency -> Node in
-                switch dependency {
-                case let .script(src: src, async: async):
-                    return script(async: (async != nil), src: src)
-                case let .stylesheet(href: href):
-                    return link(href: href, rel: "stylesheet")
-                }
-            }
+            var nodes = nodesToInject
 
             if let child = child {
-                tags.insert(child, at: 0)
+                nodes.insert(child, at: 0)
             }
 
-            return .element(name, attributes, .fragment(tags))
+            return .element(name, attributes, .fragment(nodes))
         }
 
         return .element(name, attributes, child.map(visitNode))

@@ -11,7 +11,7 @@ struct InlineFilter: Filter {
     }
 
     static func inline(file path: String) -> Node {
-        Node.element(name: "custom-inline", attributes: [ "path": path ], child: [])
+        Node.element("custom-inline", [ "path": path ], [])
     }
 }
 
@@ -24,7 +24,7 @@ private final class InlineFilterVisitor: Visitor {
 
     func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         guard name == "custom-inline", let path = attributes["path"] else {
-            return .element(name: name, attributes: attributes, child: child.map(visitNode))
+            return .element(name, attributes, child.map(visitNode))
         }
 
         let url = URL(fileURLWithPath: path, relativeTo: baseURL)

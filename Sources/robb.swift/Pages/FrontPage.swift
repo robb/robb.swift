@@ -19,8 +19,8 @@ struct FrontPage: Page {
             section(id: "intro") {
                 p {
                     em { "Hi" } %% ", my name is"
-                    span(customData: ["summary": "Robb"], classes: "token") {
-                        span(customData: ["summary": "Robert"], classes: "token") {
+                    span(class: "token", customAttributes: ["data-summary": "Robb"]) {
+                        span(class: "token", customAttributes: ["data-summary": "Robert"]) {
                             "Robert Böhnke"
                         } %% ", but you can call me Robb"
                     } %% "."
@@ -28,10 +28,10 @@ struct FrontPage: Page {
 
                 p {
                     "Iʼm&nbsp;a"
-                    span(customData: ["summary": "soft&shy;ware de&shy;velop&shy;er"], classes: "token") {
+                    span(class: "token", customAttributes: ["data-summary": "soft&shy;ware de&shy;velop&shy;er"]) {
                         "soft&shy;ware de&shy;velop&shy;er"
 
-                        span(customData: ["summary": "at&nbsp;Google"], classes: "token") {
+                        span(class: "token", customAttributes: ["data-summary": "at&nbsp;Google"]) {
                             "in the Kernel team at Google"
                         }
                     } %% "."
@@ -40,13 +40,13 @@ struct FrontPage: Page {
                 p {
                     "I&nbsp;"
                     %%
-                    span(customData: ["summary": "live in Berlin"], classes: "token") {
+                        span(class: "token", customAttributes: ["data-summary": "live in Berlin"]) {
                         "live in Berlin where I was born and raised"
                     }
                     %%
                     ".&nbsp;"
                     %%
-                    span(classes: "shake") {
+                    span(class: "shake") {
                        %"👋🏻"%
                     }
                 }

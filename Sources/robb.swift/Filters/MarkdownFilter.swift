@@ -251,7 +251,7 @@ private final class MarkdownParser {
         let url = String(cString: cmark_node_get_url(node))
         let title = String(cString: cmark_node_get_title(node))
 
-        return %a(href: url, title: title) {
+        return %a(href: url, title: title.nilIfEmpty) {
             visitChildren(of: node)
         }%
     }
@@ -260,6 +260,12 @@ private final class MarkdownParser {
         let url = String(cString: cmark_node_get_url(node))
         let title = String(cString: cmark_node_get_title(node))
 
-        return img(src: url, title: title)
+        return img(src: url, title: title.nilIfEmpty)
+    }
+}
+
+private extension Collection {
+    var nilIfEmpty: Self? {
+        isEmpty ? nil : self
     }
 }

@@ -16,13 +16,13 @@ struct DependencyFilter: Filter {
     static func dependency(javascript path: String, async: Bool) -> Node {
         var attributes = [ "src": path ]
 
-        attributes["async"] = async ? "async" : nil
+        attributes["async"] = async ? "" : nil
 
-        return Node.element(name: "custom-script-dependency", attributes: attributes, child: nil)
+        return Node.element("custom-script-dependency", attributes, nil)
     }
 
     static func dependency(stylesheet path: String) -> Node {
-        return Node.element(name: "custom-stylesheet-dependency", attributes: [ "href": path ], child: nil)
+        return Node.element("custom-stylesheet-dependency", [ "href": path ], nil)
     }
 }
 
@@ -55,7 +55,7 @@ private final class DependencyFindingVisitor: Visitor {
             return []
         }
 
-        return .element(name: name, attributes: attributes, child: child.map(visitNode))
+        return .element(name, attributes, child.map(visitNode))
     }
 }
 
@@ -71,7 +71,7 @@ private final class DependencyInjectingVisitor: Visitor {
             var tags = dependencies.map { dependency -> Node in
                 switch dependency {
                 case let .script(src: src, async: async):
-                    return script(async: async, src: src)
+                    return script(async: (async != nil), src: src)
                 case let .stylesheet(href: href):
                     return link(href: href, rel: "stylesheet")
                 }
@@ -81,9 +81,9 @@ private final class DependencyInjectingVisitor: Visitor {
                 tags.insert(child, at: 0)
             }
 
-            return .element(name: name, attributes: attributes, child: .fragment(tags))
+            return .element(name, attributes, .fragment(tags))
         }
 
-        return .element(name: name, attributes: attributes, child: child.map(visitNode))
+        return .element(name, attributes, child.map(visitNode))
     }
 }

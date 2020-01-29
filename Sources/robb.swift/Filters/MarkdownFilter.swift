@@ -23,7 +23,7 @@ import cmark
 /// ```
 struct MarkdownFilter: Filter {
     static func markdown(@NodeBuilder content: () -> NodeConvertible) -> Node {
-        .element(name: "custom-markdown", child: content().asNode())
+        .element("custom-markdown", [:], content().asNode())
     }
 
     static func render(_ string: String) -> Node? {
@@ -46,7 +46,7 @@ private final class MarkdownFilterVisitor: Visitor {
 
     func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
         guard name == "custom-markdown" else {
-            return .element(name: name, attributes: attributes, child: child.map(visitNode))
+            return .element(name, attributes, child.map(visitNode))
         }
 
         isInsideMarkdownTag = true
@@ -159,9 +159,9 @@ private final class MarkdownParser {
 
         let language = String(cString: cmark_node_get_fence_info(node))
 
-        return figure(classes: "highlight") {
+        return figure(class: "highlight") {
             pre {
-                %code(classes: "language-\(language)") {
+                %code(class: "language-\(language)") {
                     content.addingXMLEncoding()
                 }%
             }

@@ -14,10 +14,10 @@ struct PrismFilter: Filter {
 private final class PrismVisitor: Visitor {
     func visitElement(name: String, attributes: [String: String], child: Node?) -> Node {
         guard name == "figure" && attributes.hasHighlightClass else {
-            return .element(name: name, attributes: attributes, child: child.map(visitNode))
+            return .element(name, attributes, child.map(visitNode))
         }
 
-        return .element(name: name, attributes: attributes, child: [
+        return .element(name, attributes, [
             DependencyFilter.dependency(javascript: "/js/prism.js", async: true),
             DependencyFilter.dependency(stylesheet: "/css/prism.css"),
             child.map(visitNode) ?? []

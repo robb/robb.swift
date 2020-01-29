@@ -6,6 +6,7 @@ slug: the-blackwell-series
 ---
 
 <img src='/img/blackwell-deception-rosa.png' alt='Rosa Blackwell' class='left' />
+
 I've read much about the Blackwell series of indie point and click adventures and
 after the recent release of the latest entry in the series, [The Blackwell Deception][deception],
 I finally gave them a spin.

@@ -12,14 +12,15 @@ let package = Package(
         .executable(name: "robb.swift", targets: ["robb.swift"]),
     ],
     dependencies: [
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
+        .package(url: "https://github.com/apple/swift-cmark.git", .branch("master")),
         .package(url: "https://github.com/robb/Future.git", .branch("master")),
         .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
-        .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master")),
-        .package(url: "https://github.com/apple/swift-cmark.git", .branch("master"))
+        .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master"))
     ],
     targets: [
         .target(
             name: "robb.swift",
-            dependencies: [ "cmark", "Future", "HTML", "URLRequest+AWS" ])
+            dependencies: [ "ArgumentParser", "cmark", "Future", "HTML", "URLRequest+AWS" ])
     ]
 )

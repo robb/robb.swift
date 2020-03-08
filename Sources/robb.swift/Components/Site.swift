@@ -3,7 +3,7 @@ import Foundation
 struct Site {
     let filters: [Filter]
 
-    let generators: [Generator]
+    let pageGenerators: [PageGenerator]
 
     let outputDirectory: URL
 
@@ -17,7 +17,7 @@ struct Site {
             DependencyFilter()
         ]
 
-        generators = [
+        pageGenerators = [
             JekyllPostGenerator(directory: baseURL.appendingPathComponent("Posts"))
         ]
 
@@ -26,7 +26,7 @@ struct Site {
     }
 
     private func build() throws -> [Resource] {
-        let pages = try generators.flatMap { try $0.generate() }
+        let pages = try pageGenerators.flatMap { try $0.generate() }
 
         let posts = pages.compactMap { $0 as? Post }
 

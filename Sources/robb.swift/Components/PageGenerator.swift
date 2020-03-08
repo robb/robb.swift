@@ -1,5 +1,5 @@
 import Foundation
 
-protocol Generator {
+protocol PageGenerator {
     func generate() throws -> [Page]
 }

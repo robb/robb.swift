@@ -1,7 +1,7 @@
 import Foundation
 
 /// Generates a `Post` for each Jekyll-style markdown file in `directory` as well as a `CategoryIndex`.
-struct JekyllPostGenerator: Generator {
+struct JekyllPostGenerator: PageGenerator {
     var directory: URL
 
     init(directory: URL) {

@@ -135,14 +135,13 @@ struct FileHandlerOutputStream: TextOutputStream {
 extension FileManager {
     func findVisibleFiles(in directory: URL) throws -> [URL] {
         let keys = [ URLResourceKey.isRegularFileKey, .isHiddenKey ]
-        let keySet = [ URLResourceKey.isRegularFileKey, .isHiddenKey ] as Set
 
         return enumerator(at: directory, includingPropertiesForKeys: keys)?
             .map {
                 $0 as! URL
             }
             .filter { url in
-                let resourceValues = try? url.resourceValues(forKeys: keySet)
+                let resourceValues = try? url.resourceValues(forKeys: Set(keys))
 
                 return (resourceValues?.isRegularFile ?? false) &&
                     !(resourceValues?.isHidden ?? false)

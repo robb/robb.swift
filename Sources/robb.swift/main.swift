@@ -52,6 +52,7 @@ struct Sync: ParsableCommand {
 
 struct Main: ParsableCommand {
     static let configuration = CommandConfiguration(
+        commandName: "robb.swift",
         abstract: "A static site generator for https://robb.is",
         subcommands: [
             Build.self,

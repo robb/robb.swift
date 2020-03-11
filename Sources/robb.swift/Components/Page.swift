@@ -26,13 +26,21 @@ extension Page {
 }
 
 extension Page {
+    var contentType: String {
+        "text/html"
+    }
+
     var path: String {
         "/" + pathComponents.joined(separator: "/")
     }
-}
 
-extension Page {
-    var contentType: String {
-        "text/html"
+    func applyFilters(_ filters: [Filter]) -> Resource {
+        let filtered = filters.reduce(applyLayout()) { node, filter in
+            filter.apply(node: node)
+        }
+
+        let data = String(describing: filtered).data(using: .utf8) ?? Data()
+
+        return Resource(contentType: contentType, path: path, data: data)
     }
 }

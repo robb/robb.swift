@@ -9,7 +9,7 @@ struct Site {
 
     let pageGenerators: [PageGenerator]
 
-    let resourcesDirectory: URL
+    let resourceGenerators: [ResourceGenerator]
 
     init(baseDirectory: URL) throws {
         baseURL = baseDirectory
@@ -25,7 +25,10 @@ struct Site {
             JekyllPostGenerator(directory: baseURL.appendingPathComponent("Posts"))
         ]
 
-        resourcesDirectory = baseURL.appendingPathComponent("Resources")
+        resourceGenerators = [
+            StaticFileGenerator(directory: baseURL.appendingPathComponent("Resources"))
+        ]
+
         outputDirectory = baseURL.appendingPathComponent("Site")
     }
 
@@ -52,15 +55,7 @@ struct Site {
 
         let pageResources = allPages.concurrentMap { $0.applyFilters(filters) }
 
-        let resourcesDirectory = self.resourcesDirectory
-
-        let fileResources = try FileManager.default
-            .findVisibleFiles(in: resourcesDirectory)
-            .concurrentMap { url -> Resource in
-                let path = url.relativePath(to: resourcesDirectory)
-
-                return Resource(path: path, url: url)
-            }
+        let fileResources = try resourceGenerators.flatMap { try $0.generate() }
 
         return pageResources + fileResources
     }

@@ -59,46 +59,4 @@ struct Site: ResourceGenerator {
 
         return pageResources + fileResources
     }
-
-    func sync(configuration: S3Uploader.Configuration) throws {
-        let resources = try generate()
-
-        let group = DispatchGroup()
-
-        let uploader = S3Uploader(configuration: configuration)
-
-        resources.concurrentForEach { resource in
-            group.enter()
-            uploader
-                .uploadIfNeeded(resource: resource)
-                .done { result in
-                    group.leave()
-                }
-        }
-
-        group.wait()
-    }
-
-    func write() throws {
-        let resources = try generate()
-
-        resources.concurrentForEach { resource in
-            do {
-                var file = outputDirectory.appendingPathComponent(resource.path)
-
-                if resource.contentType == "text/html" {
-                    file.appendPathComponent("index.html")
-                }
-
-                try FileManager.default.createDirectory(
-                    at: file.deletingLastPathComponent(),
-                    withIntermediateDirectories: true
-                )
-
-                try resource.write(to: file)
-            } catch {
-                print(resource.path, error)
-            }
-        }
-    }
 }

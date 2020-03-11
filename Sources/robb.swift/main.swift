@@ -9,7 +9,15 @@ struct Build: ParsableCommand {
 
         let site = try Site(baseDirectory: path)
 
-        try site.write()
+        try site
+            .generate()
+            .concurrentForEach { resource in
+                do {
+                    try resource.write(relativeTo: site.outputDirectory)
+                } catch {
+                    print(resource.path, error)
+                }
+            }
     }
 }
 
@@ -23,7 +31,22 @@ struct Sync: ParsableCommand {
 
         print("Building & syncing the site to \(configuration.bucket).")
 
-        try site.sync(configuration: configuration)
+        let uploader = S3Uploader(configuration: configuration)
+
+        let group = DispatchGroup()
+
+        try site
+            .generate()
+            .concurrentForEach { resource in
+                group.enter()
+                uploader
+                    .uploadIfNeeded(resource: resource)
+                    .done { result in
+                        group.leave()
+                    }
+            }
+
+        group.wait()
     }
 }
 

@@ -39,16 +39,31 @@ public struct Resource {
 }
 
 extension Resource {
-    public func write(to url: URL) throws {
+    public func write(relativeTo outputDirectory: URL, fileManager: FileManager = .default) throws {
+        var file = outputDirectory.appendingPathComponent(path)
+
+        if contentType == "text/html" {
+            file.appendPathComponent("index.html")
+        }
+
+        try fileManager.createDirectory(
+            at: file.deletingLastPathComponent(),
+            withIntermediateDirectories: true
+        )
+
+        try write(to: file)
+    }
+
+    public func write(to url: URL, fileManager: FileManager = .default) throws {
         switch backing {
         case let .data(data):
             try data.write(to: url)
         case let .file(source):
-            if FileManager.default.fileExists(atPath: url.path) {
-                try FileManager.default.removeItem(at: url)
+            if fileManager.fileExists(atPath: url.path) {
+                try fileManager.removeItem(at: url)
             }
 
-            try FileManager.default.copyItem(at: source, to: url)
+            try fileManager.copyItem(at: source, to: url)
         }
     }
 }

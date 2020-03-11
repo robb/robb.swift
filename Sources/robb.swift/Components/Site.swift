@@ -1,15 +1,19 @@
 import Foundation
 
 struct Site {
-    let filters: [Filter]
+    let baseURL: URL
 
-    let pageGenerators: [PageGenerator]
+    let filters: [Filter]
 
     let outputDirectory: URL
 
+    let pageGenerators: [PageGenerator]
+
     let resourcesDirectory: URL
 
-    init(baseDirectory baseURL: URL) throws {
+    init(baseDirectory: URL) throws {
+        baseURL = baseDirectory
+
         filters = [
             InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
             MarkdownFilter(),
@@ -39,26 +43,14 @@ struct Site {
         let allPages = pages + [
             About(),
             Archive(posts: posts),
-            AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
+            AtomFeed(baseURL: baseURL, posts: posts.suffix(10)),
             FrontPage(highlight: highlight),
             TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
         ]
 
         let filters = self.filters
 
-        let pageResources = allPages
-            .concurrentMap { page -> Resource in
-                let unfiltered = page.applyLayout()
-
-                let filtered = filters
-                    .reduce(unfiltered) { node, filter in
-                        filter.apply(node: node)
-                    }
-
-                let data = String(describing: filtered).data(using: .utf8) ?? Data()
-
-                return Resource(contentType: page.contentType, path: page.path, data: data)
-            }
+        let pageResources = allPages.concurrentMap { $0.applyFilters(filters) }
 
         let resourcesDirectory = self.resourcesDirectory
 

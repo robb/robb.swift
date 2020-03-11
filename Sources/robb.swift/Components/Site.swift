@@ -1,6 +1,6 @@
 import Foundation
 
-struct Site {
+struct Site: ResourceGenerator {
     let baseURL: URL
 
     let filters: [Filter]
@@ -32,7 +32,7 @@ struct Site {
         outputDirectory = baseURL.appendingPathComponent("Site")
     }
 
-    private func build() throws -> [Resource] {
+    func generate() throws -> [Resource] {
         let pages = try pageGenerators.flatMap { try $0.generate() }
 
         let posts = pages.compactMap { $0 as? Post }
@@ -61,7 +61,7 @@ struct Site {
     }
 
     func sync(configuration: S3Uploader.Configuration) throws {
-        let resources = try build()
+        let resources = try generate()
 
         let group = DispatchGroup()
 
@@ -80,7 +80,7 @@ struct Site {
     }
 
     func write() throws {
-        let resources = try build()
+        let resources = try generate()
 
         resources.concurrentForEach { resource in
             do {

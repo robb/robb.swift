@@ -18,9 +18,7 @@ struct JekyllPostGenerator: PageGenerator {
                 try? Post(contentsOfJekyllPost: $0)
             }
             .compactMap { $0 }
-            .sorted { a, b in
-                a.date < b.date
-            }
+            .sorted(by: \.date)
 
         let indices = posts
             .filter {

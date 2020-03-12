@@ -10,9 +10,8 @@ struct TakingPictures: Page {
 
     func content() -> Node {
         posts
-            .sorted { a, b in
-                a.date > b.date
-            }
+            .sorted(by: \.date)
+            .reversed()
             .map { post in
                 article {
                     h1 {

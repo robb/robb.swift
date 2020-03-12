@@ -1,6 +1,6 @@
 import Foundation
 
-struct Site: ResourceGenerator {
+struct Site {
     let baseURL: URL
 
     var outputDirectory: URL {
@@ -12,25 +12,19 @@ struct Site: ResourceGenerator {
     }
 
     func generate() throws -> [Resource] {
-        let pageGenerators = [
-            JekyllPostGenerator(directory: baseURL.appendingPathComponent("Posts"))
-        ]
-
-        let pages = try pageGenerators.flatMap { try $0.generate() }
-
-        let posts = pages.compactMap { $0 as? Post }
+        let posts = try Post.jekyllPosts(in: baseURL.appendingPathComponent("Posts"))
 
         let highlight = posts
             .filter { $0.category == "working-on" }
             .max(by: \.date)!
 
-        let allPages = pages + [
+        let allPages = [
             About(),
             Archive(posts: posts),
             AtomFeed(baseURL: baseURL, posts: posts.suffix(10)),
             FrontPage(highlight: highlight),
             TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
-        ]
+        ] + posts.categoryIndices + posts
 
         let filters: [Filter] = [
             InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
@@ -41,11 +35,7 @@ struct Site: ResourceGenerator {
 
         let pageResources = allPages.concurrentMap { $0.applyFilters(filters) }
 
-        let resourceGenerators = [
-            StaticFileGenerator(directory: baseURL.appendingPathComponent("Resources"))
-        ]
-
-        let fileResources = try resourceGenerators.flatMap { try $0.generate() }
+        let fileResources = try Resource.staticFiles(in: baseURL.appendingPathComponent("Resources"))
 
         return pageResources + fileResources
     }

@@ -1,15 +1,10 @@
 import Foundation
 
-/// Generates a `Post` for each Jekyll-style markdown file in `directory` as well as a `CategoryIndex`.
-struct JekyllPostGenerator: PageGenerator {
-    var directory: URL
-
-    init(directory: URL) {
-        self.directory = directory
-    }
-
-    func generate() throws -> [Page] {
-        let posts = try FileManager.default
+extension Post {
+    /// Generates a `Post` for each Jekyll-style markdown file in `directory`
+    /// as well as a `CategoryIndex`.
+    static func jekyllPosts(in directory: URL) throws -> [Post] {
+        try FileManager.default
             .contentsOfDirectory(atPath: directory.path)
             .map {
                 directory.appendingPathComponent($0)
@@ -19,8 +14,12 @@ struct JekyllPostGenerator: PageGenerator {
             }
             .compactMap { $0 }
             .sorted(by: \.date)
+    }
+}
 
-        let indices = posts
+extension Array where Element == Post {
+    var categoryIndices: [Page] {
+        self
             .filter {
                 $0.category != nil && $0.category != "taking-pictures"
             }
@@ -28,8 +27,6 @@ struct JekyllPostGenerator: PageGenerator {
                 $0.category!
             }
             .map(CategoryIndex.init)
-
-        return posts + indices
     }
 }
 

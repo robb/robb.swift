@@ -16,7 +16,7 @@ struct StaticFileGenerator: ResourceGenerator {
                 let path = url.relativePath(to: directory)
 
                 return Resource(path: path, url: url)
-        }
+            }
     }
 }
 

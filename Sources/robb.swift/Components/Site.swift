@@ -22,9 +22,7 @@ struct Site: ResourceGenerator {
 
         let highlight = posts
             .filter { $0.category == "working-on" }
-            .max { a, b in
-                a.date < b.date
-            }!
+            .max(by: \.date)!
 
         let allPages = pages + [
             About(),

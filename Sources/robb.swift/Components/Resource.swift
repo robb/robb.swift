@@ -29,12 +29,8 @@ public struct Resource {
 
     public init(path: String, url: URL) {
         self.backing = .file(url)
+        self.contentType = url.mimeType
         self.path = path
-
-        if let uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, url.pathExtension as CFString, nil)?.takeUnretainedValue(),
-           let mime = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassMIMEType) {
-            self.contentType = String(mime.takeUnretainedValue())
-        }
     }
 }
 

@@ -87,37 +87,13 @@ private extension Post {
 
         self.category = category
         self.body = body
-        self.date = frontMatter["date"].flatMap(isoDateFormatter.date) ?? Date(from: url.lastPathComponent)!
+        self.date = frontMatter["date"].flatMap(isoDateFormatter.date) ?? Date(filename: url.lastPathComponent)!
         self.description = frontMatter["description"]
         self.image = frontMatter["image"]
         self.link = frontMatter["link"]
         self.title = title
         self.pathComponents = frontMatter["permalink"]?.pathComponents
             ?? [ category, slug ].compactMap { $0?.trimmingTrailingSlash() }
-    }
-}
-
-private extension Date {
-    init?(from title: String) {
-        var year = 0, month = 0, day = 0
-
-        let scanner = Scanner(string: title)
-
-        guard scanner.scanInt(&year)
-            && scanner.scanString("-", into: nil)
-            && scanner.scanInt(&month)
-            && scanner.scanString("-", into: nil)
-            && scanner.scanInt(&day) else {
-                return nil
-        }
-
-        let components = DateComponents(year: year, month: month, day: day)
-
-        if let date = Calendar(identifier: .gregorian).date(from: components) {
-            self = date
-        } else {
-            return nil
-        }
     }
 }
 

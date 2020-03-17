@@ -6,9 +6,7 @@ extension Post {
     static func jekyllPosts(in directory: URL) throws -> [Post] {
         try FileManager.default
             .contentsOfDirectory(atPath: directory.path)
-            .map {
-                directory.appendingPathComponent($0)
-            }
+            .map { directory / $0 }
             .concurrentMap {
                 try? Post(contentsOfJekyllPost: $0)
             }

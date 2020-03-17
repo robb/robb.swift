@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
-        .executable(name: "robb.swift", targets: ["robb.swift"]),
+        .executable(name: "robb.swift", targets: ["main"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
@@ -20,7 +20,13 @@ let package = Package(
     ],
     targets: [
         .target(
+            name: "main",
+            dependencies: [ "robb.swift", "ArgumentParser" ]),
+        .target(
             name: "robb.swift",
-            dependencies: [ "ArgumentParser", "cmark", "Future", "HTML", "URLRequest+AWS" ])
+            dependencies: [ "cmark", "Future", "HTML", "URLRequest+AWS" ]),
+        .testTarget(
+            name: "robb.swiftTests",
+            dependencies: [ "robb.swift", "cmark", "Future", "HTML", "URLRequest+AWS" ])
     ]
 )

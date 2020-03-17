@@ -8,11 +8,11 @@ public struct Resource {
 
     private var backing: Backing
 
-    var contentType: String?
+    public var contentType: String?
 
-    var path: String
+    public var path: String
 
-    var data: Data {
+    public var data: Data {
         switch backing {
         case let .data(data):
             return data

@@ -1,5 +1,6 @@
 import ArgumentParser
 import Foundation
+import robb_swift
 
 struct Build: ParsableCommand {
     let path = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)

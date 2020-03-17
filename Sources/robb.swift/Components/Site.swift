@@ -1,17 +1,17 @@
 import Foundation
 
-struct Site {
-    let baseURL: URL
+public struct Site {
+    public let baseURL: URL
 
-    var outputDirectory: URL {
+    public var outputDirectory: URL {
         baseURL.appendingPathComponent("Site")
     }
 
-    init(baseDirectory: URL) throws {
+    public init(baseDirectory: URL) throws {
         baseURL = baseDirectory
     }
 
-    func generate() throws -> [Resource] {
+    public func generate() throws -> [Resource] {
         let posts = try Post.jekyllPosts(in: baseURL.appendingPathComponent("Posts"))
 
         let highlight = posts

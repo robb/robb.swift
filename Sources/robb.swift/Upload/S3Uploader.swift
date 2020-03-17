@@ -10,11 +10,11 @@ struct HTTPError: Error {
 
 public final class S3Uploader {
     public struct Configuration: Codable {
-        var bucket: String
+        public var bucket: String
 
-        var credentials: Credentials
+        public var credentials: Credentials
 
-        var region: String
+        public var region: String
     }
 
     let configuration: Configuration

@@ -4,7 +4,7 @@ public struct Site {
     public let baseURL: URL
 
     public var outputDirectory: URL {
-        baseURL.appendingPathComponent("Site")
+        baseURL / "Site"
     }
 
     public init(baseDirectory: URL) throws {
@@ -12,7 +12,7 @@ public struct Site {
     }
 
     public func generate() throws -> [Resource] {
-        let posts = try Post.jekyllPosts(in: baseURL.appendingPathComponent("Posts"))
+        let posts = try Post.jekyllPosts(in: baseURL / "Posts")
 
         let highlight = posts
             .filter { $0.category == "working-on" }
@@ -27,7 +27,7 @@ public struct Site {
         ] + posts.categoryIndices + posts
 
         let filters: [Filter] = [
-            InlineFilter(baseURL: baseURL.appendingPathComponent("Inline")),
+            InlineFilter(baseURL: baseURL / "Inline"),
             MarkdownFilter(),
             PrismFilter(),
             DependencyFilter()
@@ -35,7 +35,7 @@ public struct Site {
 
         let pageResources = allPages.concurrentMap { $0.applyFilters(filters) }
 
-        let fileResources = try Resource.staticFiles(in: baseURL.appendingPathComponent("Resources"))
+        let fileResources = try Resource.staticFiles(in: baseURL / "Resources")
 
         return pageResources + fileResources
     }

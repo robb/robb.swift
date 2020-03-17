@@ -67,8 +67,7 @@ public final class S3Uploader {
 
 extension S3Uploader {
     private func urlForResource(_ resource: Resource) -> URL {
-        URL(string: "http://\(configuration.bucket).s3.amazonaws.com")!
-            .appendingPathComponent(resource.s3Path)
+        URL(string: "http://\(configuration.bucket).s3.amazonaws.com")! / resource.s3Path
     }
 
     private func fileExists(resource: Resource) -> Future<Bool, Error> {
@@ -110,7 +109,7 @@ extension S3Uploader {
 
         let url = urlForResource(resource)
 
-        var redirectRequest = URLRequest(url: url.appendingPathComponent("index.html"))
+        var redirectRequest = URLRequest(url: url / "index.html")
         redirectRequest.httpMethod = "PUT"
         redirectRequest.setValue(resource.s3Path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed), forHTTPHeaderField: "x-amz-website-redirect-location")
 

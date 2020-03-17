@@ -13,4 +13,8 @@ extension URL {
             .dropFirst(baseComponents.count)
             .joined(separator: "/")
     }
+
+    static func / (lhs: URL, rhs: String) -> URL {
+        lhs.appendingPathComponent(rhs)
+    }
 }

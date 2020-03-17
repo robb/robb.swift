@@ -34,7 +34,7 @@ struct AtomFeed: Page {
             updated {
                 posts.last!.date
             }
-            link(href: baseURL.appendingPathComponent(path).absoluteString, rel: "self")
+            link(href: (baseURL / path).absoluteString, rel: "self")
 
             posts
                 .reversed()
@@ -44,11 +44,9 @@ struct AtomFeed: Page {
                             post.title
                         }
                         id {
-                            baseURL
-                                .appendingPathComponent(post.path)
-                                .absoluteString
+                            (baseURL / post.path).absoluteString
                         }
-                        link(href: post.link ?? baseURL.appendingPathComponent(post.path).absoluteString, rel: "alternate")
+                        link(href: post.link ?? (baseURL / post.path).absoluteString, rel: "alternate")
                         updated {
                             post.date
                         }

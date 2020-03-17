@@ -36,7 +36,7 @@ public struct Resource {
 
 extension Resource {
     public func write(relativeTo outputDirectory: URL, fileManager: FileManager = .default) throws {
-        var file = outputDirectory.appendingPathComponent(path)
+        var file = outputDirectory / path
 
         if contentType == "text/html" {
             file.appendPathComponent("index.html")

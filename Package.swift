@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v10_13)
     ],
     products: [
-        .executable(name: "robb.swift", targets: ["main"]),
+        .executable(name: "main", targets: ["main"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),

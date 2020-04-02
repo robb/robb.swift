@@ -7,9 +7,9 @@ extension Date {
         let scanner = Scanner(string: filename)
 
         guard scanner.scanInt(&year)
-            && scanner.scanString("-", into: nil)
+            && scanner.scanString("-") != nil
             && scanner.scanInt(&month)
-            && scanner.scanString("-", into: nil)
+            && scanner.scanString("-") != nil
             && scanner.scanInt(&day) else {
                 return nil
         }

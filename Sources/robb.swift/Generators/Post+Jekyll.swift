@@ -46,13 +46,13 @@ private extension Post {
         do {
             let scanner = Scanner(string: post)
 
-            var header: NSString?
+            _ = scanner.scanString("---")
 
-            scanner.scanString("---", into: nil)
-            scanner.scanUpTo("---", into: &header)
-            scanner.scanString("---", into: nil)
+            let header = scanner.scanUpToString("---")
 
-            body = String(scanner.string.dropFirst(scanner.scanLocation))
+            _ = scanner.scanString("---")
+
+            body = String(scanner.string[scanner.currentIndex...])
 
             if let header = header {
                 let pairs = String(header)

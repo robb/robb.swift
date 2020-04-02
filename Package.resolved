@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/robb/HTML-DSL.git",
         "state": {
           "branch": "master",
-          "revision": "ca5ff6812940b7471e5db1529dce2caa7b437011",
+          "revision": "fce44ce91d7d979704efe974b3189f1e7fb33644",
           "version": null
         }
       },
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": null,
-          "revision": "f6ac7b8118ff5d1bc0faee7f37bf6f8fd8f95602",
-          "version": "0.0.1"
+          "revision": "8d31a0905c346a45c87773ad50862b5b3df8dff6",
+          "version": "0.0.4"
         }
       },
       {

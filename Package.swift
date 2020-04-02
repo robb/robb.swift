@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "robb.swift",
     platforms: [
-        .macOS(.v10_13)
+        .macOS(.v10_15)
     ],
     products: [
         .executable(name: "main", targets: ["main"]),

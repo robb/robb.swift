@@ -1,6 +1,7 @@
 import Foundation
 import HTML
 import cmark
+import libxml2
 
 /// This filter converts all its text node children from Markdown to HTML.
 ///
@@ -110,15 +111,7 @@ private final class MarkdownParser {
     }
 
     func visitChildren(of node: OpaquePointer?) -> [Node] {
-        var current = cmark_node_first_child(node)
-
-        let iterator = AnyIterator<OpaquePointer> {
-            defer {
-                current = cmark_node_next(current)
-            }
-
-            return current
-        }
+        let iterator = AnyIterator(first: cmark_node_first_child(node), next: cmark_node_next)
 
         return iterator.compactMap(visitNode)
     }
@@ -171,7 +164,22 @@ private final class MarkdownParser {
     func visit(htmlBlock node: OpaquePointer) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return .text(content)
+        let options = [
+            HTML_PARSE_NOERROR,
+            HTML_PARSE_NOWARNING,
+            HTML_PARSE_RECOVER,
+            HTML_PARSE_NONET,
+            HTML_PARSE_NOIMPLIED,
+        ].map(\.rawValue).reduce(0, |)
+
+        let doc = content.withCString { cString in
+            htmlReadMemory(cString, Int32(content.utf8.count), "", nil, Int32(options))
+        }
+        defer {
+            xmlFreeDoc(doc)
+        }
+
+        return visit(xml: xmlDocGetRootElement(doc))
     }
 
     func visit(customBlock node: OpaquePointer) -> Node? {
@@ -261,6 +269,76 @@ private final class MarkdownParser {
         let title = String(cString: cmark_node_get_title(node))
 
         return img(src: url, title: title.nilIfEmpty)
+    }
+}
+
+private extension MarkdownParser {
+    func visit(xml nodePointer: UnsafeMutablePointer<xmlNode>?) -> Node? {
+        switch nodePointer?.pointee.type {
+        case XML_ELEMENT_NODE:
+            return visit(element: nodePointer)
+        case XML_TEXT_NODE, XML_CDATA_SECTION_NODE:
+            return visit(text: nodePointer)
+        case XML_COMMENT_NODE:
+            return visit(comment: nodePointer)
+        default:
+            return nil
+        }
+    }
+
+    func visit(element nodePointer: UnsafeMutablePointer<xmlNode>?) -> Node? {
+        guard let node = nodePointer?.pointee else { return nil }
+
+        guard let name = node.name.map({ String(cString: $0) }) else { return nil }
+
+        let childIterator = AnyIterator(first: node.children, next: \.pointee.next)
+
+        let children = childIterator
+            .compactMap(visit(xml:))
+            .nilIfEmpty
+            .map(Node.fragment)
+
+        let propertyIterator = AnyIterator(first: node.properties, next: \.pointee.next)
+
+        let properties = propertyIterator.map { attribute -> (String, String) in
+            let key = String(cString: attribute.pointee.name)
+            let value = String(cString: xmlGetProp(nodePointer, attribute.pointee.name))
+
+            return (key, value)
+        }
+
+        let attributes = Dictionary(properties, uniquingKeysWith: { a, _ in a})
+
+        return .element(name, attributes, children)
+    }
+
+    func visit(text nodePointer: UnsafeMutablePointer<xmlNode>?) -> Node? {
+        let content = nodePointer?.pointee.content.map({ String(cString: $0) })
+
+        return content?
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .nilIfEmpty
+            .map(Node.text)
+    }
+
+    func visit(comment nodePointer: UnsafeMutablePointer<xmlNode>?) -> Node? {
+        let content = nodePointer?.pointee.content.map({ String(cString: $0) })
+
+        return content.map(Node.comment)
+    }
+}
+
+private extension AnyIterator {
+    init(first: Element?, next: @escaping (Element) -> Element?) {
+        var current = first
+
+        self.init {
+            defer {
+                current = current.flatMap(next)
+            }
+
+            return current
+        }
     }
 }
 

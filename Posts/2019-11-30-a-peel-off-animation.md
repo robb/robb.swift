@@ -267,16 +267,14 @@ sticker.addAnimation(animation, forKey: nil)
 
 <details>
     <summary>Why not use a displacement map?</summary>
-
-I experimented with [the sparsely documented displacement
-material][displacement], but I had seen some odd artifacts where the vertices
-would not interpolate smoothly during the animation. I also found it slightly
-easier to update the vertices in a shader modifier rather than first writing the
-gradient into an intermediary texture every time. At that point, using the same
-approach for the reflection seemed conceptually simpler, too.
-
-That said, you might want to reconsider the approach in this article and
-investigate displacement maps on your own app.
+    I experimented with <a href="https://developer.apple.com/documentation/scenekit/scnmaterial/2867516-displacement">the sparsely documented displacement
+    material</a>, but I had seen some odd artifacts where the vertices
+    would not interpolate smoothly during the animation. I also found it slightly
+    easier to update the vertices in a shader modifier rather than first writing the
+    gradient into an intermediary texture every time. At that point, using the same
+    approach for the reflection seemed conceptually simpler, too.
+    That said, you might want to reconsider the approach in this article and
+    investigate displacement maps on your own app.
 </details>
 
 ### Adding the Highlight
@@ -331,37 +329,31 @@ The result looks immediately nicer:
 
 <details>
     <summary>How can I easily iterate on equations like this?</summary>
-
-If you don't find building equations like _sine of π times t to the 12th power_
-not immediately intuitive (I sure don't), then maybe consider trusty old
-Grapher:
-
-<style scoped>
-#grapher img {
-    max-width: 100%;
-}
-
-#grapher .dark-only {
-    display: none;
-}
-
-@media (prefers-color-scheme: dark) {
-    #grapher .dark-only {
-        display: unset;
-    }
-
-    #grapher .light-only {
-        display: none;
-    }
-}
-</style>
-<div id="grapher" class="image">
-    <img loading="lazy" class="dark-only" width="823" src="/img/stickers/grapher-dark.png" alt="Grapher.app">
-    <img loading="lazy" class="light-only" width="823" src="/img/stickers/grapher-light.png" alt="Grapher.app">
-</div>
-
-I've found it tremendously useful in quickly working out timing functions when
-working on animations such as this.
+    If you don't find building equations like _sine of π times t to the 12th power_
+    not immediately intuitive (I sure don't), then maybe consider trusty old
+    Grapher:
+    <style>
+        #grapher img {
+            max-width: 100%;
+        }
+        #grapher .dark-only {
+            display: none;
+        }
+        @media (prefers-color-scheme: dark) {
+            #grapher .dark-only {
+                display: unset;
+            }
+            #grapher .light-only {
+                display: none;
+            }
+        }
+    </style>
+    <div id="grapher" class="image">
+        <img loading="lazy" class="dark-only" width="823" src="/img/stickers/grapher-dark.png" alt="Grapher.app">
+        <img loading="lazy" class="light-only" width="823" src="/img/stickers/grapher-light.png" alt="Grapher.app">
+    </div>
+    I've found it tremendously useful in quickly working out timing functions when
+    working on animations such as this.
 </details>
 
 ### Adding a Reflection
@@ -588,15 +580,17 @@ func gestureRecognizerDidUpdate(sender: UILongPressGestureRecognizer) {
 
 <details>
     <summary>Aren't you missing something, Robb?</summary>
-
-Obviously, the interaction doesn't actually allow you to do anything meaningful
-with the view that is being manipulated, but there are some other details
-missing. For example, the `StickerView` doesn't take into account the transform
-of the original view. It's also not playing well with other gesture recognizers
-that might be installed on a parent scroll view for example.
-
-Writing a full-featured drag and drop interaction would fill an article on its
-own. Maybe I'll revisit this topic in the future for a follow up post.
+        <p>
+            Obviously, the interaction doesn't actually allow you to do anything meaningful
+            with the view that is being manipulated, but there are some other details
+            missing. For example, the `StickerView` doesn't take into account the transform
+            of the original view. It's also not playing well with other gesture recognizers
+            that might be installed on a parent scroll view for example.
+        </p>
+        <p>
+            Writing a full-featured drag and drop interaction would fill an article on its
+            own. Maybe I'll revisit this topic in the future for a follow up post.
+        </p>
 </details>
 
 With these changes in place, we can now add an instance of `PeelOffInteraction`
@@ -630,7 +624,6 @@ stickers][appstore].
 [chris]:            https://twitter.com/chriseidhof
 [cubic]:            https://easings.net/en#easeInOutCubic
 [daniel]:           https://twitter.com/danielboedewadt
-[displacement]:     https://developer.apple.com/documentation/scenekit/scnmaterial/2867516-displacement
 [dlx]:              https://twitter.com/dlx
 [dominik]:          https://twitter.com/monkeydom
 [felix]:            https://twitter.com/felixjendrusch

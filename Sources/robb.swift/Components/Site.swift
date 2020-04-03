@@ -21,7 +21,7 @@ public struct Site {
         let allPages = [
             About(),
             Archive(posts: posts),
-            AtomFeed(baseURL: baseURL, posts: posts.suffix(10)),
+            AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
             FrontPage(highlight: highlight),
             TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
         ] + posts.categoryIndices + posts

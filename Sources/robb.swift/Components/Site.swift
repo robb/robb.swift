@@ -18,13 +18,17 @@ public struct Site {
             .filter { $0.category == "working-on" }
             .max(by: \.date)!
 
-        let allPages = [
-            About(),
-            Archive(posts: posts),
-            AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
-            FrontPage(highlight: highlight),
-            TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
-        ] + posts.categoryIndices + posts
+        let allPages: [Page] = [
+            posts,
+            posts.categoryIndices,
+            [
+                About(),
+                Archive(posts: posts),
+                AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
+                FrontPage(highlight: highlight),
+                TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
+            ]
+        ].flatMap { $0 }
 
         let filters: [Filter] = [
             InlineFilter(baseURL: baseURL / "Inline"),

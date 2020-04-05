@@ -30,6 +30,7 @@ public struct Site {
             InlineFilter(baseURL: baseURL / "Inline"),
             MarkdownFilter(),
             PrismFilter(),
+            XMLEncodingFilter(),
             DependencyFilter()
         ]
 

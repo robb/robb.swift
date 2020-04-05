@@ -58,13 +58,11 @@ struct AtomFeed: Page {
                         }
 
                         content(type: "html") {
-                            let unfiltered = post.content()
-
-                            let filtered = markdownFilter.apply(node: unfiltered)
-
-                            return String(describing: filtered)
-                                .trimmingCharacters(in: .whitespaces)
-                                .addingXMLEncoding()
+                            XMLEncodingFilter.encode {
+                                MarkdownFilter.markdown {
+                                    post.content()
+                                }
+                            }
                         }
                     }
                 }
@@ -109,7 +107,7 @@ extension AtomFeed {
         .element("summary", [ "type": type ], children().asNode())
     }
 
-    private func content(type: String = "text", children: () -> String) -> Node {
+    private func content(type: String = "text", @NodeBuilder children: () -> NodeConvertible) -> Node {
         .element("content", [ "type": type ], children().asNode())
     }
 }

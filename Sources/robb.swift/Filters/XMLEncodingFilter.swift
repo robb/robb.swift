@@ -6,7 +6,7 @@ struct XMLEncodingFilter: Filter {
         .element("custom-xml-encode", [:], content().asNode())
     }
 
-    func apply(node: Node) -> Node {
+    func apply(node: Node, resources: inout Set<Resource>) -> Node {
         let visitor = XMLEncodingVisitor()
 
         return visitor.visitNode(node)

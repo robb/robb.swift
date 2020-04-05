@@ -3,7 +3,7 @@ import HTML
 
 /// Injects a dependency into the `head` of the current page, if it exists.
 struct DependencyFilter: Filter {
-    func apply(node: Node) -> Node {
+    func apply(node: Node, resources: inout Set<Resource>) -> Node {
         let finder = DependencyFindingVisitor()
 
         let stripped = finder.visitNode(node)

@@ -1,7 +1,7 @@
 import Foundation
 
-public struct Resource {
-    private enum Backing {
+public struct Resource: Hashable {
+    private enum Backing: Hashable {
         case data(Data)
         case file(URL)
     }

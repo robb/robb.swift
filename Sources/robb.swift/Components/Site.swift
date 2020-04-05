@@ -11,7 +11,7 @@ public struct Site {
         baseURL = baseDirectory
     }
 
-    public func generate() throws -> [Resource] {
+    public func generate() throws -> Set<Resource> {
         let posts = try Post.jekyllPosts(in: baseURL / "Posts")
 
         let highlight = posts
@@ -34,14 +34,13 @@ public struct Site {
             InlineFilter(baseURL: baseURL / "Inline"),
             MarkdownFilter(),
             PrismFilter(),
+            ResourceGatheringFilter(baseURL: baseURL / "Resources"),
             XMLEncodingFilter(),
             DependencyFilter()
         ]
 
-        let pageResources = allPages.concurrentMap { $0.applyFilters(filters) }
+        let renderedPages = allPages.concurrentMap { $0.render(filters: filters) }
 
-        let fileResources = try Resource.staticFiles(in: baseURL / "Resources")
-
-        return pageResources + fileResources
+        return renderedPages.reduce([]) { $0.union($1) }
     }
 }

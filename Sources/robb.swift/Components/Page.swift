@@ -14,14 +14,6 @@ protocol Page {
 }
 
 extension Page {
-    func applyLayout(_ layout: Layout = Self.defaultLayout) -> Node {
-        layout.render(page: self) {
-            content()
-        }
-    }
-}
-
-extension Page {
     static var defaultLayout: Layout { .page }
 }
 
@@ -34,13 +26,21 @@ extension Page {
         "/" + pathComponents.joined(separator: "/")
     }
 
-    func applyFilters(_ filters: [Filter]) -> Resource {
-        let filtered = filters.reduce(applyLayout()) { node, filter in
-            filter.apply(node: node)
+    func render(layout: Layout = Self.defaultLayout, filters: [Filter]) -> Set<Resource> {
+        let root = layout.render(page: self) {
+            content()
+        }
+
+        var resources: Set<Resource> = []
+
+        let filtered = filters.reduce(root) { node, filter in
+            filter.apply(node: node, resources: &resources)
         }
 
         let data = String(describing: filtered).data(using: .utf8) ?? Data()
 
-        return Resource(contentType: contentType, path: path, data: data)
+        resources.insert(Resource(contentType: contentType, path: path, data: data))
+
+        return resources
     }
 }

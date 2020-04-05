@@ -12,7 +12,7 @@ struct Build: ParsableCommand {
 
         try site
             .generate()
-            .concurrentForEach { resource in
+            .forEach { resource in
                 do {
                     try resource.write(relativeTo: site.outputDirectory)
                 } catch {
@@ -38,7 +38,7 @@ struct Sync: ParsableCommand {
 
         try site
             .generate()
-            .concurrentForEach { resource in
+            .forEach { resource in
                 group.enter()
                 uploader
                     .uploadIfNeeded(resource: resource)

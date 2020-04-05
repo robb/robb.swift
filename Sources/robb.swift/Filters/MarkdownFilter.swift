@@ -33,7 +33,7 @@ struct MarkdownFilter: Filter {
         return parser.parse()
     }
 
-    func apply(node: Node) -> Node {
+    func apply(node: Node, resources: inout Set<Resource>) -> Node {
         let visitor = MarkdownFilterVisitor()
 
         return visitor.visitNode(node)

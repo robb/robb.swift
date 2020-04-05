@@ -4,7 +4,7 @@ import HTML
 /// Automatically sets up a dependency to prism.js for every `figure` element
 /// that has a `highlight` class
 struct PrismFilter: Filter {
-    func apply(node: Node) -> Node {
+    func apply(node: Node, resources: inout Set<Resource>) -> Node {
         let visitor = PrismVisitor()
 
         return visitor.visitNode(node)

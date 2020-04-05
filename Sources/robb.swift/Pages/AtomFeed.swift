@@ -29,7 +29,7 @@ struct AtomFeed: Page {
                 self.title
             }
             id {
-                "http://robb.is/"
+                baseURL.absoluteString
             }
             updated {
                 posts.last!.date

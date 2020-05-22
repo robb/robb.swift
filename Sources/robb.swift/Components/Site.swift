@@ -26,7 +26,9 @@ public struct Site {
                 Archive(posts: posts),
                 AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
                 FrontPage(highlight: highlight),
-                TakingPictures(posts: posts.filter { $0.category == "taking-pictures" })
+                Gallery(directory: baseURL / "Resources" / "photos" / "USA"),
+                Gallery(directory: baseURL / "Resources" / "photos" / "Japan"),
+                Gallery(directory: baseURL / "Resources" / "photos" / "Europe")
             ]
         ].flatMap { $0 }
 
@@ -34,9 +36,9 @@ public struct Site {
             InlineFilter(baseURL: baseURL / "Inline"),
             MarkdownFilter(),
             PrismFilter(),
+            DependencyFilter(),
             ResourceGatheringFilter(baseURL: baseURL / "Resources"),
             XMLEncodingFilter(),
-            DependencyFilter()
         ]
 
         let renderedPages = allPages.concurrentMap { $0.render(filters: filters) }

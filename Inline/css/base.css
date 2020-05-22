@@ -236,11 +236,11 @@ article ul li:before {
 }
 
 article ol {
-    counter-reset: list-item 1;
+    counter-reset: list-counter 0;
 }
 
 article ol li {
-    counter-increment: list-item;
+    counter-increment: list-counter;
     list-style-type: none;
     margin-left: 2rem;
     position: relative;
@@ -248,7 +248,7 @@ article ol li {
 
 article ol li:before {
     text-align: right;
-    content: counter(list-item) ".";
+    content: counter(list-counter) ".";
     font-variant-numeric: tabular-nums;
     left: -3.0rem;
     width: 2.7rem;

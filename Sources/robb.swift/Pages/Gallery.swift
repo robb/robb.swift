@@ -18,11 +18,14 @@ struct Gallery: Page {
     func content() -> Node {
         [
             DependencyFilter.dependency(stylesheet: "/css/gallery.css"),
+            DependencyFilter.dependency(javascript: "/js/loading-attribute-polyfill.min.js", async: false),
             h1 {
                 title
             },
             .fragment(photos.map { photo in
-                img(class: "gallery-photo", loading: "lazy", src: photo.url.absoluteString)
+                noscript(class: "loading-lazy") {
+                    img(class: "gallery-photo", loading: "lazy", src: photo.url.absoluteString)
+                }
             })
         ]
     }

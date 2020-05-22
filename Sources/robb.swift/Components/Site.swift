@@ -26,6 +26,7 @@ public struct Site {
                 Archive(posts: posts),
                 AtomFeed(baseURL: URL(string: "https://robb.is")!, posts: posts.suffix(10)),
                 FrontPage(highlight: highlight),
+                GalleryIndex(),
                 Gallery(directory: baseURL / "Resources" / "photos" / "USA"),
                 Gallery(directory: baseURL / "Resources" / "photos" / "Japan"),
                 Gallery(directory: baseURL / "Resources" / "photos" / "Europe")

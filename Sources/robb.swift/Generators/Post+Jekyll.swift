@@ -19,7 +19,7 @@ extension Array where Element == Post {
     var categoryIndices: [Page] {
         self
             .filter {
-                $0.category != nil && $0.category != "taking-pictures"
+                $0.category != nil
             }
             .grouped {
                 $0.category!

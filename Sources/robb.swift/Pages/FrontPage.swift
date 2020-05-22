@@ -53,10 +53,16 @@ struct FrontPage: Page {
             }
 
             p {
-                "You can check out some of my"
-                a(href: "/taking-pictures") { "photos" }
-                %% ", learn"
-                a(href: "/who-exactly") { "more about me" }
+                "You can check out some of the photos I’ve taken in"
+                a(href: "/taking-pictures/Europe") {
+                    "Berlin"
+                } %% ","
+                a(href: "/taking-pictures/Japan") {
+                    "Japan"
+                } %% " or the "
+                a(href: "/taking-pictures/USA") {
+                    "Bay Area"
+                }
                 "or read about my latest project:"
                 a(href: highlight.path) { highlight.title } %% "."
             }

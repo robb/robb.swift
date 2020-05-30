@@ -1,5 +1,6 @@
 import Foundation
 import Future
+import Logging
 import URLRequest_AWS
 
 struct HTTPError: Error {
@@ -9,6 +10,13 @@ struct HTTPError: Error {
 }
 
 public final class S3Uploader {
+    public static let defaultLogger: Logger = {
+        var logger = Logger(label: "is.robb.website.upload")
+        logger.logLevel = .notice
+
+        return logger
+    }()
+
     public struct Configuration: Codable {
         public var bucket: String
 
@@ -19,10 +27,14 @@ public final class S3Uploader {
 
     let configuration: Configuration
 
+    let logger: Logger
+
     let urlSession: URLSession
 
-    public init(configuration: Configuration) {
+    public init(configuration: Configuration, logger: Logger = S3Uploader.defaultLogger) {
         self.configuration = configuration
+
+        self.logger = logger
 
         let config = URLSessionConfiguration.ephemeral
         config.httpShouldUsePipelining = true
@@ -101,7 +113,11 @@ extension S3Uploader {
         request.setValue(resource.contentType, forHTTPHeaderField: "Content-Type")
         request.setValue(resource.storageClass, forHTTPHeaderField: "x-amz-storage-class")
 
-        return performRequest(request).map { _ in }
+        return performRequest(request)
+            .map { _ in }
+            .do {
+                self.logger.info("Updating metadata for \(resource.s3Path)")
+            }
     }
 
     private func setupRedirect(resource: Resource) -> Future<Void, Error> {
@@ -113,7 +129,11 @@ extension S3Uploader {
         redirectRequest.httpMethod = "PUT"
         redirectRequest.setValue(resource.s3Path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed), forHTTPHeaderField: "x-amz-website-redirect-location")
 
-        return performRequest(redirectRequest).map { _ in }
+        return performRequest(redirectRequest)
+            .map { _ in }
+            .do {
+                self.logger.info("Setting up redirect for \(resource.s3Path)")
+            }
     }
 
     private func upload(resource: Resource) -> Future<Void, Error> {
@@ -127,7 +147,11 @@ extension S3Uploader {
         putRequest.setValue(resource.data.md5Hash().base64EncodedString(), forHTTPHeaderField: "Content-MD5")
         putRequest.setValue(resource.storageClass, forHTTPHeaderField: "x-amz-storage-class")
 
-        return performRequest(putRequest).map { _ in }
+        return performRequest(putRequest)
+            .map { _ in }
+            .do {
+                self.logger.notice("Uploading \(resource.s3Path)")
+            }
     }
 
     public func uploadIfNeeded(resource: Resource) -> Future<Void, Error> {
@@ -167,5 +191,15 @@ private extension Resource {
 
     var storageClass: String {
         return "STANDARD"
+    }
+}
+
+extension Future {
+    func `do`(_ function: @escaping (Success) -> Void) -> Future<Success, Failure> {
+        map {
+            function($0)
+
+            return $0
+        }
     }
 }

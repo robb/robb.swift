@@ -14,9 +14,10 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
         .package(url: "https://github.com/apple/swift-cmark.git", .branch("master")),
+        .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/robb/Future.git", .branch("master")),
         .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
-        .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master"))
+        .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master")),
     ],
     targets: [
         .target(
@@ -24,7 +25,7 @@ let package = Package(
             dependencies: [ "robb.swift", "ArgumentParser" ]),
         .target(
             name: "robb.swift",
-            dependencies: [ "cmark", "Future", "HTML", "URLRequest+AWS" ]),
+            dependencies: [ "cmark", "Future", "HTML", "Logging", "URLRequest+AWS" ]),
         .testTarget(
             name: "robb.swiftTests",
             dependencies: [ "robb.swift", "cmark", "Future", "HTML", "URLRequest+AWS" ])

@@ -65,6 +65,19 @@ struct FrontPage: Page {
                 }
                 "or read about my latest project:"
                 a(href: highlight.path) { highlight.title } %% "."
+                "You can also"
+                a(href: "/who-exactly") {
+                    "learn more about me"
+                }
+                "or follow me on"
+                a(href: "https://github.com/robb") {
+                    "GitHub"
+                }
+                "and"
+                a(href: "https://twitter.com/dlx") {
+                    "Twitter"
+                }
+                "."
             }
 
             script(type: "text/javascript") {

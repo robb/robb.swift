@@ -16,7 +16,7 @@ Here's the original shot by the [CreativeDash team][creativedash]:
 
 <div class="image">
     <a href="https://dribbble.com/shots/1623679-Open-Close">
-        <img src="https://d13yacurqjgara.cloudfront.net/users/107759/screenshots/1623679/menu.gif">
+        <img src="https://cdn.dribbble.com/users/107759/screenshots/1623679/menu.gif">
     </a>
 </div>
 

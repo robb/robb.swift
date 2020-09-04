@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/robb/Future.git",
         "state": {
           "branch": "master",
-          "revision": "a2e244080e4fae79bd004f5dc89ac2ac847ae6b2",
+          "revision": "b2bcd251f45c10ac4087e3d7ccb22a825552bae2",
           "version": null
         }
       },
@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/robb/HTML-DSL.git",
         "state": {
           "branch": "master",
-          "revision": "17483ad6733a352d6b09bf350bab75c2b364a2a8",
+          "revision": "8aaaa9db9566861e3125c41f111bde7debebc0aa",
           "version": null
         }
       },
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
           "branch": null,
-          "revision": "8d31a0905c346a45c87773ad50862b5b3df8dff6",
-          "version": "0.0.4"
+          "revision": "92646c0cdbaca076c8d3d0207891785b3379cbff",
+          "version": "0.3.1"
         }
       },
       {
@@ -33,7 +33,7 @@
         "repositoryURL": "https://github.com/apple/swift-cmark.git",
         "state": {
           "branch": "master",
-          "revision": "1168665f6b36be747ffe6b7b90bc54cfc17f42b7",
+          "revision": "9c8096a23f44794bde297452d87c455fc4f76d42",
           "version": null
         }
       },
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
           "branch": null,
-          "revision": "74d7b91ceebc85daf387ebb206003f78813f71aa",
-          "version": "1.2.0"
+          "revision": "173f567a2dfec11d74588eea82cecea555bdc0bc",
+          "version": "1.4.0"
         }
       },
       {
@@ -51,7 +51,7 @@
         "repositoryURL": "https://github.com/robb/URLRequest-AWS.git",
         "state": {
           "branch": "master",
-          "revision": "4b908bfd4c7478eaae2232c460d9285d2173b7b8",
+          "revision": "49beefa68a8a2b4e255b1a1e920316b225c0c4a3",
           "version": null
         }
       }

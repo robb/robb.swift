@@ -34,7 +34,7 @@ public struct Site {
         ].flatMap { $0 }
 
         let filters: [Filter] = [
-            InlineFilter(baseURL: baseURL / "Inline"),
+            InlineFilter(baseURL: baseURL / "Resources"),
             MarkdownFilter(),
             PrismFilter(),
             DependencyFilter(),

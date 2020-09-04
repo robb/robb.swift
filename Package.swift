@@ -26,8 +26,5 @@ let package = Package(
         .target(
             name: "robb.swift",
             dependencies: [ "cmark", "Future", "HTML", "Logging", "URLRequest+AWS" ]),
-        .testTarget(
-            name: "robb.swiftTests",
-            dependencies: [ "robb.swift", "cmark", "Future", "HTML", "URLRequest+AWS" ])
     ]
 )

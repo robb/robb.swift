@@ -34,6 +34,8 @@ private extension Sequence {
     }
 }
 
+private let isoDateFormatter = ISO8601DateFormatter()
+
 private extension Post {
     init(contentsOfJekyllPost url: URL) throws {
         let post = try String(contentsOf: url)
@@ -80,8 +82,6 @@ private extension Post {
         let title = frontMatter["title"] ?? url.lastPathComponent
         let slug = frontMatter["slug"] ?? title.lowercased().replacingOccurrences(of: " ", with: "-")
         let category = frontMatter["category"]
-
-        let isoDateFormatter = ISO8601DateFormatter()
 
         self.category = category
         self.body = body

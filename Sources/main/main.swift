@@ -10,9 +10,10 @@ struct Build: ParsableCommand {
 
         let site = try Site(baseDirectory: path)
 
-        try site
-            .generate()
-            .forEach { resource in
+        let resources = try Array(site.generate())
+
+        resources
+            .concurrentForEach { resource in
                 do {
                     try resource.write(relativeTo: site.outputDirectory)
                 } catch {

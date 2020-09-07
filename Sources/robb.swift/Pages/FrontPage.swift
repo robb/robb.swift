@@ -12,7 +12,7 @@ struct FrontPage: Page {
 
     func content() -> Node {
         header(id: "header") {
-            style(type: "text/css") {
+            style {
                 InlineFilter.inline(file: "css/intro.css")
             }
 
@@ -47,7 +47,7 @@ struct FrontPage: Page {
                     ".&nbsp;"
                     %%
                     span(class: "shake") {
-                       %"👋🏻"%
+                       "👋🏻"
                     }
                 }
             }
@@ -76,8 +76,7 @@ struct FrontPage: Page {
                 "and"
                 a(href: "https://twitter.com/dlx") {
                     "Twitter"
-                }
-                "."
+                } %% "."
             }
 
             script(type: "text/javascript") {

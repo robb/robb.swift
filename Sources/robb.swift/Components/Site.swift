@@ -18,7 +18,7 @@ public struct Site {
             .filter { $0.category == "working-on" }
             .max(by: \.date)!
 
-        let allPages: [Page] = [
+        let indexedPages: [Page] = [
             posts,
             posts.categoryIndices,
             [
@@ -32,6 +32,10 @@ public struct Site {
                 Gallery(directory: baseURL / "Resources" / "photos" / "Europe")
             ]
         ].flatMap { $0 }
+
+        let allPages = indexedPages + [
+            Sitemap(baseURL: URL(string: "https://robb.is")!, pages: indexedPages)
+        ]
 
         let filters: [Filter] = [
             InlineFilter(baseURL: baseURL / "Resources"),

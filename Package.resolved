@@ -15,7 +15,7 @@
         "repositoryURL": "https://github.com/robb/HTML-DSL.git",
         "state": {
           "branch": "master",
-          "revision": "8aaaa9db9566861e3125c41f111bde7debebc0aa",
+          "revision": "4b25b2edb5db5a2c755d3e576a2eebf3e52fd91f",
           "version": null
         }
       },
@@ -32,7 +32,7 @@
         "package": "cmark",
         "repositoryURL": "https://github.com/apple/swift-cmark.git",
         "state": {
-          "branch": "master",
+          "branch": "main",
           "revision": "9c8096a23f44794bde297452d87c455fc4f76d42",
           "version": null
         }

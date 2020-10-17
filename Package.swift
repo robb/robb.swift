@@ -16,7 +16,7 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-cmark.git", .branch("main")),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/robb/Future.git", .branch("master")),
-        .package(url: "https://github.com/robb/HTML-DSL.git", .branch("master")),
+        .package(url: "https://github.com/robb/Swim.git", .branch("main")),
         .package(url: "https://github.com/robb/URLRequest-AWS.git", .branch("master")),
     ],
     targets: [

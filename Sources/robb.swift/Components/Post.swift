@@ -1,5 +1,6 @@
 import Foundation
 import HTML
+import Swim
 
 private let calendar = Calendar(identifier: .gregorian)
 

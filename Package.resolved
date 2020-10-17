@@ -11,15 +11,6 @@
         }
       },
       {
-        "package": "HTML",
-        "repositoryURL": "https://github.com/robb/HTML-DSL.git",
-        "state": {
-          "branch": "master",
-          "revision": "4b25b2edb5db5a2c755d3e576a2eebf3e52fd91f",
-          "version": null
-        }
-      },
-      {
         "package": "swift-argument-parser",
         "repositoryURL": "https://github.com/apple/swift-argument-parser",
         "state": {
@@ -44,6 +35,15 @@
           "branch": null,
           "revision": "173f567a2dfec11d74588eea82cecea555bdc0bc",
           "version": "1.4.0"
+        }
+      },
+      {
+        "package": "HTML",
+        "repositoryURL": "https://github.com/robb/Swim.git",
+        "state": {
+          "branch": "main",
+          "revision": "46d115e249f9e07a765c9e3aa8d6b1f434485a48",
+          "version": null
         }
       },
       {

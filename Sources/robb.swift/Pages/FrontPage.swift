@@ -1,5 +1,6 @@
 import Foundation
 import HTML
+import Swim
 
 struct FrontPage: Page {
     static let defaultLayout: Layout = .basic

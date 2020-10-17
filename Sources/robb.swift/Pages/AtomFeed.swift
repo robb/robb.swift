@@ -1,5 +1,5 @@
 import Foundation
-import HTML
+import Swim
 
 struct AtomFeed: Page {
     static let defaultLayout: Layout = .empty

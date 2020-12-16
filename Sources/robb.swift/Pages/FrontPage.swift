@@ -2,6 +2,12 @@ import Foundation
 import HTML
 import Swim
 
+fileprivate func token(summary: String, @NodeBuilder children: () -> NodeConvertible = { Node.fragment([]) }) -> Node {
+    span(class: "token", customAttributes: ["data-summary": summary]) {
+        children()
+    }
+}
+
 struct FrontPage: Page {
     static let defaultLayout: Layout = .basic
 
@@ -20,8 +26,8 @@ struct FrontPage: Page {
             section(id: "intro") {
                 p {
                     em { "Hi" } %% ", my name is"
-                    span(class: "token", customAttributes: ["data-summary": "Robb"]) {
-                        span(class: "token", customAttributes: ["data-summary": "Robert"]) {
+                    token(summary: "Robb") {
+                        token(summary: "Robert") {
                             "Robert Böhnke"
                         } %% ", but you can call me Robb"
                     } %% "."
@@ -29,10 +35,10 @@ struct FrontPage: Page {
 
                 p {
                     "Iʼm&nbsp;a"
-                    span(class: "token", customAttributes: ["data-summary": "soft&shy;ware de&shy;velop&shy;er"]) {
+                    token(summary: "soft&shy;ware de&shy;velop&shy;er") {
                         "soft&shy;ware de&shy;velop&shy;er"
 
-                        span(class: "token", customAttributes: ["data-summary": "at&nbsp;Google"]) {
+                        token(summary: "at&nbsp;Google") {
                             "in the Kernel team at Google"
                         }
                     } %% "."
@@ -41,7 +47,7 @@ struct FrontPage: Page {
                 p {
                     "I&nbsp;"
                     %%
-                        span(class: "token", customAttributes: ["data-summary": "live in Berlin"]) {
+                        token(summary: "live in Berlin") {
                         "live in Berlin where I was born and raised"
                     }
                     %%

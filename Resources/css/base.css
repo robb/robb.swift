@@ -40,13 +40,13 @@ body {
     -webkit-text-size-adjust: 100%;
 }
 
-article header, h1, h2, h3 {
+article header, h1, h2, h3, h4 {
     font-weight: 400;
     color: rgba(64, 64, 64, 1);
 }
 
 @media (prefers-color-scheme: dark) {
-    article header, h1, h2, h3 {
+    article header, h1, h2, h3, h4 {
         color: rgba(240, 240, 240, 1);
     }
 }

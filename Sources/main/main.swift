@@ -2,9 +2,9 @@ import ArgumentParser
 import Foundation
 import robb_swift
 
-struct Build: ParsableCommand {
-    let path = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
+let path = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
 
+struct Build: ParsableCommand {
     func run() throws {
         print("Building the site.")
 
@@ -24,8 +24,6 @@ struct Build: ParsableCommand {
 }
 
 struct Sync: ParsableCommand {
-    let path = URL(fileURLWithPath: FileManager.default.currentDirectoryPath)
-
     func run() throws {
         let site = try Site(baseDirectory: path)
 

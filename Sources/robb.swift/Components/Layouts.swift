@@ -48,6 +48,8 @@ extension Layout {
 
                     meta(content: "width=device-width, initial-scale=1.0", name: "viewport")
 
+                    meta(content: "interest-cohort=()", httpEquiv: "Permissions-Policy")
+
                     (page as? Post).map { post -> Node in
                         return .fragment([
                             meta(content: "summary", name: "twitter:card"),

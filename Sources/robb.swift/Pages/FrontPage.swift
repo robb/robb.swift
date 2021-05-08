@@ -34,13 +34,9 @@ struct FrontPage: Page {
                 }
 
                 p {
-                    "Iʼm&nbsp;a"
-                    token(summary: "soft&shy;ware de&shy;velop&shy;er") {
-                        "soft&shy;ware de&shy;velop&shy;er"
-
-                        token(summary: "at&nbsp;Google") {
-                            "in the Kernel team at Google"
-                        }
+                    "Iʼm working on "
+                    a(href: "https://movingparts.io") {
+                        "Moving Parts"
                     } %% "."
                 }
 

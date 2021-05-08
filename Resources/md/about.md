@@ -1,6 +1,8 @@
 *Hi*, my name is Robb Böhnke, I'm a seasoned software engineer. I live in Berlin.
 
-Enjoy working on the boundary of human and computer interaction – be it in the form of API design, animations or assistive technologies. 
+I enjoy working on the boundary of human and computer interaction – be it in the form of API design, animations or assistive technologies.
+
+I'm currently building [Moving Parts](https://movingparts.io), a scable library of interface components for SwiftUI.
 
 If you would like to get in touch with me, send an e-mail to [robb@robb.is](mailto:robb@robb.is). You can also check out my [GitHub profile][github] or follow me on [Twitter][twitter], if you'd like.
 

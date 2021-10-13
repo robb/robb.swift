@@ -12,7 +12,9 @@ struct ResourceGatheringFilter: Filter {
             resources.formUnion(visitor.resources)
         }
 
-        return visitor.visitNode(node)
+        visitor.visitNode(node)
+
+        return node
     }
 }
 
@@ -31,25 +33,33 @@ private final class ResourceGatheringVisitor: Visitor {
         self.baseURL = baseURL
     }
 
-    func visitElement(name: String, attributes: [String : String], child: Node?) -> Node {
+    func visitElement(name: String, attributes: [String : String], child: Node?) -> Void {
+        defer {
+            if let child = child {
+                visitNode(child)
+            }
+        }
+
         guard let attribute = attributeByName[name] else {
-            return .element(name, attributes, child.map(visitNode))
+            return
         }
 
         guard let value = attributes[attribute] else {
-            return .element(name, attributes, child.map(visitNode))
+            return
         }
 
         guard let resource = Resource(src: value, baseURL: baseURL) else {
-            return .element(name, attributes, child.map(visitNode))
+            return
         }
 
         resources.insert(resource)
 
         var copy = attributes
         copy[attribute] = resource.path
+    }
 
-        return .element(name, copy, child.map(visitNode))
+    func visitFragment(children: [Node]) -> Void {
+        children.concurrentForEach(visitNode)
     }
 }
 

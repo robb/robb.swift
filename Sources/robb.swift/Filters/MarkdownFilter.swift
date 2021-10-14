@@ -1,6 +1,7 @@
 import Foundation
 import HTML
-import cmark
+import cmark_gfm
+import cmark_gfm_extensions
 import libxml2
 
 /// This filter converts all its text node children from Markdown to HTML.
@@ -63,15 +64,30 @@ private final class MarkdownFilterVisitor: Visitor {
 
         return MarkdownFilter.render(text) ?? ""
     }
+
+    func visitRaw(raw: String) -> Node {
+        guard isInsideMarkdownTag else { return .raw(raw) }
+
+        return MarkdownFilter.render(raw) ?? ""
+    }
 }
 
 private final class MarkdownParser {
-    private var root: OpaquePointer?
+    private var root: UnsafeMutablePointer<cmark_node>?
+
+    var footnoteIndex = 1
+
+    lazy var documentID: UUID = UUID()
 
     init(document: String) {
-        root = document.withCString { body in
-            cmark_parse_document(body, strlen(body), 0)
-        }
+        cmark_gfm_core_extensions_ensure_registered()
+
+        let parser = cmark_parser_new(CMARK_OPT_FOOTNOTES)
+        cmark_parser_attach_syntax_extension(parser, cmark_find_syntax_extension("strikethrough"))
+
+        cmark_parser_feed(parser, document, document.utf8.count)
+
+        root = cmark_parser_finish(parser)
     }
 
     deinit {
@@ -82,51 +98,63 @@ private final class MarkdownParser {
         root.flatMap(visitNode)
     }
 
-    func visitNode(_ node: OpaquePointer) -> Node? {
-        switch cmark_node_get_type(node) {
-        case CMARK_NODE_DOCUMENT:       return visit(document: node)
-        case CMARK_NODE_BLOCK_QUOTE:    return visit(blockQuote: node)
-        case CMARK_NODE_LIST:           return visit(list: node)
-        case CMARK_NODE_ITEM:           return visit(item: node)
-        case CMARK_NODE_CODE_BLOCK:     return visit(codeBlock: node)
-        case CMARK_NODE_HTML_BLOCK:     return visit(htmlBlock: node)
-        case CMARK_NODE_CUSTOM_BLOCK:   return visit(customBlock: node)
-        case CMARK_NODE_PARAGRAPH:      return visit(paragraph: node)
-        case CMARK_NODE_HEADING:        return visit(heading: node)
-        case CMARK_NODE_THEMATIC_BREAK: return visit(thematicBreak: node)
+    func visitNode(_ node: UnsafeMutablePointer<cmark_node>?) -> Node? {
+        if cmark_node_get_type(node) == CMARK_NODE_FOOTNOTE_DEFINITION {
+            return visit(footnoteDefinition: node)
+        }
 
-        case CMARK_NODE_TEXT:           return visit(text: node)
-        case CMARK_NODE_SOFTBREAK:      return visit(softBreak: node)
-        case CMARK_NODE_LINEBREAK:      return visit(lineBreak: node)
-        case CMARK_NODE_CODE:           return visit(code: node)
-        case CMARK_NODE_HTML_INLINE:    return visit(htmlInline: node)
-        case CMARK_NODE_CUSTOM_INLINE:  return visit(customInline: node)
-        case CMARK_NODE_EMPH:           return visit(emphasis: node)
-        case CMARK_NODE_STRONG:         return visit(strong: node)
-        case CMARK_NODE_LINK:           return visit(link: node)
-        case CMARK_NODE_IMAGE:          return visit(image: node)
+        if cmark_node_get_type(node) == CMARK_NODE_FOOTNOTE_REFERENCE {
+            return visit(footnoteReference: node)
+        }
+
+        switch String(cString: cmark_node_get_type_string(node)) {
+        case "document":       return visit(document: node)
+        case "block_quote":    return visit(blockQuote: node)
+        case "list":           return visit(list: node)
+        case "item":           return visit(item: node)
+        case "code_block":     return visit(codeBlock: node)
+        case "html_block":     return visit(htmlBlock: node)
+        case "custom_block":   return visit(customBlock: node)
+        case "paragraph":      return visit(paragraph: node)
+        case "heading":        return visit(heading: node)
+        case "thematic_break": return visit(thematicBreak: node)
+
+        case "text":           return visit(text: node)
+        case "softbreak":      return visit(softBreak: node)
+        case "linebreak":      return visit(lineBreak: node)
+        case "code":           return visit(code: node)
+        case "html_inline":    return visit(htmlInline: node)
+        case "custom_inline":  return visit(customInline: node)
+        case "emph":           return visit(emphasis: node)
+        case "strong":         return visit(strong: node)
+        case "link":           return visit(link: node)
+        case "image":          return visit(image: node)
+
+        case "strikethrough":  return visit(strikethrough: node)
+
+        case "attribute":           return visit(attribute: node)
         default:
-            return nil
+            fatalError("Unhandled node type: \(String(cString: cmark_node_get_type_string(node)))")
         }
     }
 
-    func visitChildren(of node: OpaquePointer?) -> [Node] {
+    func visitChildren(of node: UnsafeMutablePointer<cmark_node>?) -> [Node] {
         let iterator = AnyIterator(first: cmark_node_first_child(node), next: cmark_node_next)
 
         return iterator.compactMap(visitNode)
     }
 
-    func visit(document node: OpaquePointer) -> Node? {
+    func visit(document node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         .fragment(visitChildren(of: node))
     }
 
-    func visit(blockQuote node: OpaquePointer) -> Node? {
+    func visit(blockQuote node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         blockquote {
             visitChildren(of: node)
         }
     }
 
-    func visit(list node: OpaquePointer) -> Node? {
+    func visit(list node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         switch cmark_node_get_list_type(node) {
         case CMARK_BULLET_LIST:
             return ul {
@@ -141,13 +169,13 @@ private final class MarkdownParser {
         }
     }
 
-    func visit(item node: OpaquePointer) -> Node? {
+    func visit(item node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         li {
             visitChildren(of: node)
         }
     }
 
-    func visit(codeBlock node: OpaquePointer) -> Node? {
+    func visit(codeBlock node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
         let language = String(cString: cmark_node_get_fence_info(node))
@@ -161,7 +189,7 @@ private final class MarkdownParser {
         }
     }
 
-    func visit(htmlBlock node: OpaquePointer) -> Node? {
+    func visit(htmlBlock node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
         let options = [
@@ -182,17 +210,17 @@ private final class MarkdownParser {
         return visit(xml: xmlDocGetRootElement(doc))
     }
 
-    func visit(customBlock node: OpaquePointer) -> Node? {
+    func visit(customBlock node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         fatalError("What is a CustomBlock?")
     }
 
-    func visit(paragraph node: OpaquePointer) -> Node? {
+    func visit(paragraph node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         p {
             visitChildren(of: node)
         }
     }
 
-    func visit(heading node: OpaquePointer) -> Node? {
+    func visit(heading node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         switch cmark_node_get_heading_level(node) {
         case 2:
             return h2 { visitChildren(of: node) }
@@ -209,53 +237,53 @@ private final class MarkdownParser {
         }
     }
 
-    func visit(thematicBreak node: OpaquePointer) -> Node? {
+    func visit(thematicBreak node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         hr()
     }
 
-    func visit(text node: OpaquePointer) -> Node? {
+    func visit(text node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return .text(content)
+        return .raw(content)
     }
 
-    func visit(softBreak node: OpaquePointer) -> Node? {
+    func visit(softBreak node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         .text("")
     }
 
-    func visit(lineBreak node: OpaquePointer) -> Node? {
+    func visit(lineBreak node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         br()
     }
 
-    func visit(code node: OpaquePointer) -> Node? {
+    func visit(code node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
         return %code { content.addingXMLEncoding() }%
     }
 
-    func visit(htmlInline node: OpaquePointer) -> Node? {
+    func visit(htmlInline node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return .text(content)
+        return .raw(content)
     }
 
-    func visit(customInline node: OpaquePointer) -> Node? {
+    func visit(customInline node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         fatalError("What is a CustomInline?")
     }
 
-    func visit(emphasis node: OpaquePointer) -> Node? {
+    func visit(emphasis node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         %em {
             visitChildren(of: node)
         }%
     }
 
-    func visit(strong node: OpaquePointer) -> Node? {
+    func visit(strong node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         %strong {
             visitChildren(of: node)
         }%
     }
 
-    func visit(link node: OpaquePointer) -> Node? {
+    func visit(link node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let url = String(cString: cmark_node_get_url(node))
         let title = String(cString: cmark_node_get_title(node))
 
@@ -264,11 +292,53 @@ private final class MarkdownParser {
         }%
     }
 
-    func visit(image node: OpaquePointer) -> Node? {
+    func visit(image node: UnsafeMutablePointer<cmark_node>?) -> Node? {
         let url = String(cString: cmark_node_get_url(node))
         let title = String(cString: cmark_node_get_title(node))
 
         return img(src: url, title: title.nilIfEmpty)
+    }
+
+    func visit(strikethrough node: UnsafeMutablePointer<cmark_node>?) -> Node? {
+        %s {
+            visitChildren(of: node)
+        }%
+    }
+
+    func visit(footnoteDefinition node: UnsafeMutablePointer<cmark_node>?) -> Node? {
+        defer {
+            footnoteIndex += 1
+        }
+
+        let label = String(footnoteIndex)
+
+        return div(id: "footnote-\(documentID.uuidString)-\(label)") {
+            %a(href: "#footnote-\(documentID.uuidString)-ref-\(label)") {
+                %.text(label)%
+            } %% ":"
+
+            visitChildren(of: node)
+        }
+    }
+
+    func visit(footnoteReference node: UnsafeMutablePointer<cmark_node>?) -> Node? {
+        guard let literal = cmark_node_get_literal(node) else { return nil }
+
+        let label = String(cString: literal)
+
+        return %sup {
+            %a(href: "#footnote-\(documentID.uuidString)-\(label)", id: "footnote-\(documentID.uuidString)-ref-\(label)") {
+                %.text(label)%
+            }%
+        }%
+    }
+
+    func visit(attribute node: UnsafeMutablePointer<cmark_node>?) -> Node? {
+        if let attributes = cmark_node_get_attributes(node) {
+            print(String(cString: attributes))
+        }
+
+        return .fragment(visitChildren(of: node))
     }
 }
 

@@ -1,5 +1,9 @@
 *Hi*, my name is Robb Böhnke, I'm a seasoned software engineer. I live in Berlin.
 
+I like footnotes[^footnotes].
+
+[^footnotes]: Footnotes are great. 
+
 I enjoy working on the boundary of human and computer interaction – be it in the form of API design, animations or assistive technologies.
 
 I'm currently building [Moving Parts](https://movingparts.io), a scable library of interface components for SwiftUI.

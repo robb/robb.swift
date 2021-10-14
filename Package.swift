@@ -13,7 +13,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.1"),
-        .package(url: "https://github.com/apple/swift-cmark.git", .branch("main")),
+        .package(path: "../swift-cmark"),
         .package(url: "https://github.com/apple/swift-log.git", from: "1.0.0"),
         .package(url: "https://github.com/robb/Future.git", .branch("master")),
         .package(url: "https://github.com/robb/Swim.git", .branch("main")),
@@ -25,6 +25,6 @@ let package = Package(
             dependencies: [ "robb.swift", "ArgumentParser" ]),
         .target(
             name: "robb.swift",
-            dependencies: [ "cmark", "Future", "HTML", "Logging", "URLRequest+AWS" ]),
+            dependencies: [ "cmark-gfm", "cmark-gfm-extensions", "Future", "HTML", "Logging", "URLRequest+AWS" ]),
     ]
 )

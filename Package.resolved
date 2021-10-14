@@ -20,15 +20,6 @@
         }
       },
       {
-        "package": "cmark",
-        "repositoryURL": "https://github.com/apple/swift-cmark.git",
-        "state": {
-          "branch": "main",
-          "revision": "9c8096a23f44794bde297452d87c455fc4f76d42",
-          "version": null
-        }
-      },
-      {
         "package": "swift-log",
         "repositoryURL": "https://github.com/apple/swift-log.git",
         "state": {
@@ -42,7 +33,7 @@
         "repositoryURL": "https://github.com/robb/Swim.git",
         "state": {
           "branch": "main",
-          "revision": "2abdfa99513e09092dfc85fbb07a89b26c71b9c0",
+          "revision": "1931ed5468a559190c0c750cfb1a38720efb190f",
           "version": null
         }
       },

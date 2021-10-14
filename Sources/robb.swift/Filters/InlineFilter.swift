@@ -29,6 +29,6 @@ private final class InlineFilterVisitor: Visitor {
 
         let url = URL(fileURLWithPath: path, relativeTo: baseURL)
 
-        return try! .text(String(contentsOf: url))
+        return try! .raw(String(contentsOf: url))
     }
 }

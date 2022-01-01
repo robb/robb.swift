@@ -29,7 +29,8 @@ public struct Site {
                 GalleryIndex(),
                 Gallery(directory: baseURL / "Resources" / "photos" / "USA"),
                 Gallery(directory: baseURL / "Resources" / "photos" / "Japan"),
-                Gallery(directory: baseURL / "Resources" / "photos" / "Europe")
+                Gallery(directory: baseURL / "Resources" / "photos" / "Europe"),
+                Imprint()
             ]
         ].flatMap { $0 }
 

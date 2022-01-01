@@ -63,6 +63,12 @@ private final class MarkdownFilterVisitor: Visitor {
 
         return MarkdownFilter.render(text) ?? ""
     }
+
+    func visitRaw(raw: String) -> Node {
+        guard isInsideMarkdownTag else { return .raw(raw) }
+
+        return MarkdownFilter.render(raw) ?? ""
+    }
 }
 
 private final class MarkdownParser {

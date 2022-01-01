@@ -23,6 +23,6 @@ private final class XMLEncodingVisitor: Visitor {
             .trimmingCharacters(in: .whitespaces)
             .addingXMLEncoding()
 
-        return .text(string)
+        return .raw(string)
     }
 }

@@ -72,11 +72,6 @@ private final class DependencyInjectingVisitor: Visitor {
             return .element(name, attributes, .fragment(nodes))
         }
 
-        // Abort
-        if name == "body" {
-            return .element(name, attributes, child)
-        }
-
         return .element(name, attributes, child.map(visitNode))
     }
 }

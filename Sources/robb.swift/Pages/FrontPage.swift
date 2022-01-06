@@ -41,13 +41,13 @@ struct FrontPage: Page {
                 }
 
                 p {
-                    "I&nbsp;"
+                    .raw("I&nbsp;")
                     %%
                         token(summary: "live in Berlin") {
                         "live in Berlin where I was born and raised"
                     }
                     %%
-                    ".&nbsp;"
+                    .raw(".&nbsp;")
                     %%
                     span(class: "shake") {
                        "👋🏻"

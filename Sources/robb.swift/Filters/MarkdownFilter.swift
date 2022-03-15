@@ -59,7 +59,7 @@ private final class MarkdownFilterVisitor: Visitor {
     }
 
     func visitText(text: String) -> Node {
-        guard isInsideMarkdownTag else { return .text(text) }
+        guard isInsideMarkdownTag else { return .raw(text) }
 
         return MarkdownFilter.render(text) ?? ""
     }
@@ -222,11 +222,11 @@ private final class MarkdownParser {
     func visit(text node: OpaquePointer) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return .text(content)
+        return .raw(content)
     }
 
     func visit(softBreak node: OpaquePointer) -> Node? {
-        .text("")
+        .raw("")
     }
 
     func visit(lineBreak node: OpaquePointer) -> Node? {
@@ -242,7 +242,7 @@ private final class MarkdownParser {
     func visit(htmlInline node: OpaquePointer) -> Node? {
         let content = String(cString: cmark_node_get_literal(node))
 
-        return .text(content)
+        return .raw(content)
     }
 
     func visit(customInline node: OpaquePointer) -> Node? {
@@ -324,7 +324,7 @@ private extension MarkdownParser {
         return content?
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .nilIfEmpty
-            .map(Node.text)
+            .map(Node.raw)
     }
 
     func visit(comment nodePointer: UnsafeMutablePointer<xmlNode>?) -> Node? {

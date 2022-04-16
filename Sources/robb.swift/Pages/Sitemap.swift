@@ -16,16 +16,18 @@ struct Sitemap: Page {
 
     func content() -> Node {
         urlset(xmlns: "http://www.sitemaps.org/schemas/sitemap/0.9") {
-            pages.map { page in
-                url {
-                    loc {
-                        baseURL.appendingPathComponent(page.path)
-                    }
-                    changefreq {
-                        "weekly"
+            pages
+                .sorted(by: \.path)
+                .map { page in
+                    url {
+                        loc {
+                            baseURL.appendingPathComponent(page.path)
+                        }
+                        changefreq {
+                            "weekly"
+                        }
                     }
                 }
-            }
         }
     }
 }

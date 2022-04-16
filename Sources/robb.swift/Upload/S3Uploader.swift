@@ -1,5 +1,4 @@
 import Foundation
-import Future
 import Logging
 import URLRequest_AWS
 
@@ -43,36 +42,25 @@ public final class S3Uploader {
         self.urlSession = URLSession(configuration: config)
     }
 
-    private func performRequest(_ request: URLRequest) -> Future<(data: Data?, response: HTTPURLResponse), Error> {
+    @discardableResult
+    private func performRequest(_ request: URLRequest) async throws -> (Data?, HTTPURLResponse) {
         struct UnexpectedStateError: Error {}
 
         var copy = request
 
         copy.sign(credentials: configuration.credentials, region: configuration.region, service: "s3")
 
-        return Future { resolve in
-            let task = self.urlSession.dataTask(with: copy) { data, response, error in
-                let result: Result<(data: Data?, response: HTTPURLResponse), Error>
+        let (data, response) = try await self.urlSession.data(for: copy)
 
-                defer {
-                    resolve(result)
-                }
-
-                switch (data, response, error) {
-                case let (data, response as HTTPURLResponse, _):
-                    if response.statusCode < 400 {
-                        result = .success((data, response))
-                    } else {
-                        result = .failure(HTTPError(data: data, response: response))
-                    }
-                case let (_, _, error?):
-                    result = .failure(error)
-                default:
-                    result = .failure(UnexpectedStateError())
-                }
+        switch (data, response) {
+        case let (data, response as HTTPURLResponse):
+            if response.statusCode < 400 {
+                return (data, response)
+            } else {
+                throw HTTPError(data: data, response: response)
             }
-
-            task.resume()
+        default:
+            throw UnexpectedStateError()
         }
     }
 }
@@ -82,23 +70,23 @@ extension S3Uploader {
         URL(string: "http://\(configuration.bucket).s3.amazonaws.com")! / resource.s3Path
     }
 
-    private func fileExists(resource: Resource) -> Future<Bool, Error> {
+    private func fileExists(resource: Resource) async throws -> Bool {
         let url = urlForResource(resource)
 
         var request = URLRequest(url: url)
         request.httpMethod = "HEAD"
         request.setValue(resource.data.md5Hash().hexEncodedString(), forHTTPHeaderField: "If-None-Match")
 
-        return performRequest(request)
-            .map { result in
-                result.response.statusCode == 304
-            }
-            .flatMapError { _ in
-                Future(value: false)
-            }
+        do {
+            let (_, response) = try await performRequest(request)
+
+            return response.statusCode == 304
+        } catch where error is HTTPError {
+            return false
+        }
     }
 
-    private func updateMetadata(resource: Resource) -> Future<Void, Error> {
+    private func updateMetadata(resource: Resource) async throws {
         let url = urlForResource(resource)
 
         let copySource = configuration.bucket +
@@ -113,15 +101,13 @@ extension S3Uploader {
         request.setValue(resource.contentType, forHTTPHeaderField: "Content-Type")
         request.setValue(resource.storageClass, forHTTPHeaderField: "x-amz-storage-class")
 
-        return performRequest(request)
-            .map { _ in }
-            .do {
-                self.logger.info("Updating metadata for \(resource.s3Path)")
-            }
+        self.logger.info("Updating metadata for \(resource.s3Path)")
+
+        try await performRequest(request)
     }
 
-    private func setupRedirect(resource: Resource) -> Future<Void, Error> {
-        guard resource.requiresRedirect else { return Future() }
+    private func setupRedirect(resource: Resource) async throws {
+        guard resource.requiresRedirect else { return }
 
         let url = urlForResource(resource)
 
@@ -129,14 +115,12 @@ extension S3Uploader {
         redirectRequest.httpMethod = "PUT"
         redirectRequest.setValue(resource.s3Path.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed), forHTTPHeaderField: "x-amz-website-redirect-location")
 
-        return performRequest(redirectRequest)
-            .map { _ in }
-            .do {
-                self.logger.info("Setting up redirect for \(resource.s3Path)")
-            }
+        self.logger.info("Setting up redirect for \(resource.s3Path)")
+
+        try await performRequest(redirectRequest)
     }
 
-    private func upload(resource: Resource) -> Future<Void, Error> {
+    private func upload(resource: Resource) async throws {
         let url = urlForResource(resource)
 
         var putRequest = URLRequest(url: url)
@@ -147,26 +131,19 @@ extension S3Uploader {
         putRequest.setValue(resource.data.md5Hash().base64EncodedString(), forHTTPHeaderField: "Content-MD5")
         putRequest.setValue(resource.storageClass, forHTTPHeaderField: "x-amz-storage-class")
 
-        return performRequest(putRequest)
-            .map { _ in }
-            .do {
-                self.logger.notice("Uploading \(resource.s3Path)")
-            }
+        self.logger.notice("Uploading \(resource.s3Path)")
+
+        try await performRequest(putRequest)
     }
 
-    public func uploadIfNeeded(resource: Resource) -> Future<Void, Error> {
-        let uploadTask = upload(resource: resource)
-        let updateMetadataTask = updateMetadata(resource: resource)
-        let setupRedirectTask = setupRedirect(resource: resource)
+    public func uploadIfNeeded(resource: Resource) async throws {
+        if try await fileExists(resource: resource) {
+            try await updateMetadata(resource: resource)
+        } else {
+            try await upload(resource: resource)
+        }
 
-        return self
-            .fileExists(resource: resource)
-            .flatMap { alreadyExists in
-                alreadyExists ? updateMetadataTask : uploadTask
-            }
-            .flatMap {
-                setupRedirectTask
-            }
+        try await setupRedirect(resource: resource)
     }
 }
 
@@ -191,15 +168,5 @@ private extension Resource {
 
     var storageClass: String {
         return "STANDARD"
-    }
-}
-
-extension Future {
-    func `do`(_ function: @escaping (Success) -> Void) -> Future<Success, Failure> {
-        map {
-            function($0)
-
-            return $0
-        }
     }
 }

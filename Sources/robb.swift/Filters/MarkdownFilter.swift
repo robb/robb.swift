@@ -161,7 +161,7 @@ private final class MarkdownParser {
         return figure(class: "highlight") {
             pre {
                 %code(class: "language-\(language)") {
-                    content.addingXMLEncoding()
+                    content
                 }%
             }
         }

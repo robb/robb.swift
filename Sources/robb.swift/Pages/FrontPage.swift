@@ -75,7 +75,10 @@ struct FrontPage: Page {
                 "or follow me on"
                 a(href: "https://github.com/robb") {
                     "GitHub"
-                }
+                } %% ","
+                a(href: "https://mastodon.social/@DLX", rel: "me") {
+                    "Mastodon"
+                } %% ","
                 "and"
                 a(href: "https://twitter.com/dlx") {
                     "Twitter"

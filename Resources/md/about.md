@@ -4,7 +4,7 @@ I enjoy working on the boundary of human and computer interaction – be it in t
 
 I'm currently building [Moving Parts](https://movingparts.io), a scalable library of interface components for SwiftUI.
 
-If you would like to get in touch with me, send an e-mail to [robb@robb.is](mailto:robb@robb.is). You can also check out my [GitHub profile][github] or follow me on [Twitter][twitter], if you'd like.
+If you would like to get in touch with me, send an e-mail to [robb@robb.is](mailto:robb@robb.is). You can also check out my [GitHub profile][github] or follow me on [Mastodon][mastodon] or [Twitter][twitter], if you'd like.
 
 ### Notable Contributions
 
@@ -101,4 +101,5 @@ It's about ReactiveCocoa.
 [soundcloud_ios]:     http://itunes.apple.com/en/app/soundcloud/id336353151
 [soundcloud]:         https://soundcloud.com
 [twitter]:            https://twitter.com/dlx
+[mastodon]:           https://mastodon.social/@DLX
 [github]:             https://github.com/robb

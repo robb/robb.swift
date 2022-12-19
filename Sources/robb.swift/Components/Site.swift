@@ -30,7 +30,8 @@ public struct Site {
                 Gallery(directory: baseURL / "Resources" / "photos" / "USA"),
                 Gallery(directory: baseURL / "Resources" / "photos" / "Japan"),
                 Gallery(directory: baseURL / "Resources" / "photos" / "Europe"),
-                Imprint()
+                Imprint(),
+                WebFinger()
             ]
         ].flatMap { $0 }
 

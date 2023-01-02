@@ -49,6 +49,8 @@ extension Layout {
                     meta(content: "width=device-width, initial-scale=1.0", name: "viewport")
 
                     meta(content: "interest-cohort=()", httpEquiv: "Permissions-Policy")
+                    
+                    link(href: "/atom.xml", rel: "alternate", title: "RSS Feed for robb.is", type: "application/atom+xml")
 
                     (page as? Post).map { post -> Node in
                         return .fragment([
